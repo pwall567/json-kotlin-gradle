@@ -7,17 +7,17 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "net.pwall.json"
-version = "0.0.1"
-description = "Code Generation Plugin for JSON Schema"
+version = "0.31.2"
+description = "Gradle Code Generation Plugin for JSON Schema"
 
+val displayName = "JSON Schema Code Generation Plugin"
 val projectURL = "https://github.com/pwall567/${project.name}"
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version("1.4.20")
+    kotlin("jvm") version("1.4.20")
     id("org.jetbrains.dokka") version "1.4.30"
-    id("io.github.gradle-nexus.publish-plugin") version("1.0.0")
+    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
     `kotlin-dsl`
-    `java-gradle-plugin`
     `maven-publish`
     signing
 }
@@ -66,73 +66,69 @@ tasks {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("net.pwall.json:json-kotlin-schema-codegen:0.30")
-    implementation("net.pwall.json:jsonutil:4.1")
-    implementation("net.pwall.json:json-pointer:1.0")
+    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("gradle-plugin-api"))
+    implementation("net.pwall.json:json-kotlin-schema-codegen:0.31")
+    implementation("net.pwall.json:jsonutil:5.0")
+    implementation("net.pwall.json:json-pointer:1.1.1")
     implementation("net.pwall.yaml:yaml-simple:1.0")
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    testImplementation(kotlin("test"))
+    testImplementation(kotlin("test-junit"))
 }
 
-gradlePlugin {
-    plugins {
-        create("codegen") {
-            id = "net.pwall.json.schema.codegen"
-            implementationClass = "net.pwall.json.kotlin.codegen.gradle.CodegenPlugin"
+publishing {
+    publications {
+        afterEvaluate {
+            named<MavenPublication>("pluginMaven") {
+                artifact(file("build/libs/${project.name}-${project.version}-sources.jar")) {
+                    classifier = "sources"
+                }
+                artifact(file("build/libs/${project.name}-${project.version}-javadoc.jar")) {
+                    classifier = "javadoc"
+                }
+                pom {
+                    name.set(displayName)
+                    url.set(projectURL)
+                    description.set(project.description)
+                    packaging = "jar"
+                    scm {
+                        connection.set("scm:git:git://github.com/pwall567/${project.name}.git")
+                        url.set(projectURL)
+                    }
+                    licenses {
+                        license {
+                            name.set("The MIT License (MIT)")
+                            url.set("http://opensource.org/licenses/MIT")
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set("pwall@pwall.net")
+                            name.set("Peter Wall")
+                            email.set("pwall@pwall.net")
+                            url.set("https://pwall.net")
+                            roles.set(setOf("architect", "developer"))
+                            timezone.set("Australia/Sydney")
+                        }
+                    }
+                }
+            }
         }
     }
-}
-
-signing {
-    useGpgCmd()
-    sign(configurations.archives.get())
 }
 
 nexusPublishing {
     repositories {
         sonatype {
-            username.set(System.getenv("NEXUS_USERNAME"))
-            password.set(System.getenv("NEXUS_PASSWORD"))
+            username.set(project.findProperty("ossrhUsername").toString())
+            password.set(project.findProperty("ossrhPassword").toString())
         }
     }
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            from(components["java"])
-            artifact(file("build/libs/${project.name}-${project.version}-sources.jar")) {
-                classifier = "sources"
-            }
-            artifact(file("build/libs/${project.name}-${project.version}-javadoc.jar")) {
-                classifier = "javadoc"
-            }
-            pom {
-                name.set(project.description)
-                url.set(projectURL)
-                packaging = "jar"
-                scm {
-                    connection.set("scm:git:git://github.com/pwall567/${project.name}.git")
-                    url.set(projectURL)
-                }
-                licenses {
-                    license {
-                        name.set("The MIT License (MIT)")
-                        url.set("http://opensource.org/licenses/MIT")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("pwall@pwall.net")
-                        name.set("Peter Wall")
-                        email.set("pwall@pwall.net")
-                        url.set("https://pwall.net")
-                        roles.set(setOf("architect", "developer"))
-                        timezone.set("Australia/Sydney")
-                    }
-                }
-            }
-        }
+signing {
+    afterEvaluate {
+        useGpgCmd()
+        sign(*publishing.publications.toTypedArray())
     }
 }
