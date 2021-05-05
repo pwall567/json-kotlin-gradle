@@ -49,7 +49,7 @@ open class JSONSchemaCodegen(project: Project) {
     }
 
     val pointer = project.objects.property<String>().apply {
-        convention("/")
+        convention("")
     }
 
     val outputDir = project.objects.property<File>()
