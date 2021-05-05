@@ -68,6 +68,7 @@ open class JSONSchemaCodegenTask : DefaultTask() {
                 ext.classMappings.forEach {
                     it.applyTo(this)
                 }
+                ext.generatorComment.orNull?.let { generatorComment = it }
                 generateAll(schema, JSONPointer(ext.pointer.get()))
             }
             println("Generation complete")

@@ -27,7 +27,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.31")
+        classpath("net.pwall.json:json-kotlin-gradle:0.31.3")
     }
 }
 
@@ -40,5 +40,6 @@ configure<JSONSchemaCodegen> {
     packageName.set("your.package.name")
     inputFile.set(file("path/to/your/file")) // probably in src/main/resources/...
     pointer.set("/\$defs") // a JSON Pointer to the group of definitions within the file
+    generatorComment.set("comment...")
 }
 ```

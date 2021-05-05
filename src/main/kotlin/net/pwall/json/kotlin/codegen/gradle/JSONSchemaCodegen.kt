@@ -54,6 +54,8 @@ open class JSONSchemaCodegen(project: Project) {
 
     val outputDir = project.objects.property<File>()
 
+    val generatorComment = project.objects.property<String>()
+
     val classMappings: ClassMappingContainer = ClassMappingContainerImpl(project,
             project.objects.polymorphicDomainObjectContainer(ClassMapping::class.java))
 
