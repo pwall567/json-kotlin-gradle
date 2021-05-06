@@ -6,10 +6,14 @@ The major and minor version numbers of this repository (but not patch numbers) m
 [`json-kotlin-schema-codegen`](https://github.com/pwall567/json-kotlin-schema-codegen) library used by this Gradle
 plugin. 
 
-## [0.31.3] - 2021-05-05
+## [0.31.3] - 2021-05-07
 ### Changed
 - `JSONSchemaCodegen`, `JSONSchemaCodegenTask`: Added `generatorComment`
+- `JSONSchemaCodegen`, `JSONSchemaCodegenTask`: Added schema extensions
 - `build.gradle.kts`, `README.md`: bumped version number, extended example
+### Added
+- `SchemaExtension`, `SchemaExtensionContainer`, `SchemaExtensionContainerImpl`, `SchemaExtensionFormatValidation`,
+`SchemaExtensionIntValidation`, `SchemaExtensionPatternValidation`: new
 
 ### Added
 - this file

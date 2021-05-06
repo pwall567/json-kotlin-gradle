@@ -1,5 +1,5 @@
 /*
- * @(#) ClassMapping.kt
+ * @(#) SchemaExtensionIntValidation.kt
  *
  * json-kotlin-gradle  Gradle Code Generation Plugin for JSON Schema
  * Copyright (c) 2021 Peter Wall
@@ -23,36 +23,37 @@
  * SOFTWARE.
  */
 
-package net.pwall.json.kotlin.codegen.gradle.mapping
+package net.pwall.json.kotlin.codegen.gradle.extension
 
+import java.net.URI
 import javax.inject.Inject
 
-import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.tasks.Input
 import org.gradle.kotlin.dsl.property
 
-import net.pwall.json.schema.codegen.ClassId
-import net.pwall.json.schema.codegen.ClassName
-import net.pwall.json.schema.codegen.CodeGenerator
+import net.pwall.json.pointer.JSONPointer
+import net.pwall.json.schema.JSONSchema
+import net.pwall.json.schema.validation.NumberValidator
 
 @Suppress("UnstableApiUsage")
-abstract class ClassMapping @Inject constructor(@Input val name0: String, project: Project) : Named {
-
-    override fun getName(): String = name0
+class SchemaExtensionIntValidation @Inject constructor(name: String, project: Project) :
+        SchemaExtension(name, project) {
 
     @Input
-    val className = project.objects.property<String>()
+    val type = project.objects.property<String>()
 
-    abstract fun applyTo(codeGenerator: CodeGenerator)
+    @Input
+    val number = project.objects.property<Int>()
 
-    val classId: ClassId
-        get() = className.get().let {
-            val i = it.lastIndexOf('.')
-            if (i < 0)
-                ClassName(it)
-            else
-                ClassName(it.substring(i + 1), it.substring(0, i))
-        }
+    override fun validator(uri: URI?, pointer: JSONPointer): JSONSchema.Validator {
+        return NumberValidator(uri, pointer, number.get(), when (type.get()) {
+            "minimum" -> NumberValidator.ValidationType.MINIMUM
+            "maximum" -> NumberValidator.ValidationType.MAXIMUM
+            "exclusive-minimum" -> NumberValidator.ValidationType.EXCLUSIVE_MINIMUM
+            "exclusive-maximum" -> NumberValidator.ValidationType.EXCLUSIVE_MAXIMUM
+            else -> throw IllegalArgumentException("Invalid comparison type")
+        })
+    }
 
 }

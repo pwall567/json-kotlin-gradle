@@ -35,6 +35,7 @@ import net.pwall.json.JSON
 import net.pwall.json.pointer.JSONPointer
 import net.pwall.json.schema.codegen.CodeGenerator
 import net.pwall.json.schema.codegen.TargetLanguage
+import net.pwall.json.schema.parser.Parser
 import net.pwall.yaml.YAMLSimple
 
 @Suppress("UnstableApiUsage")
@@ -56,6 +57,13 @@ open class JSONSchemaCodegenTask : DefaultTask() {
             val language = ext.language.get()
             val outputDir = ext.outputDir.orNull ?: File("build/generated-sources/$language")
             CodeGenerator().apply {
+                schemaParser = Parser().apply {
+                    customValidationHandler = { key, uri, pointer, value ->
+                        ext.schemaExtensions.find {
+                            it.keyword.get() == key && it.value.get() == value.toString()
+                        }?.validator(uri, pointer)
+                    }
+                }
                 targetLanguage = when (language) {
                     "kotlin" -> TargetLanguage.KOTLIN
                     "java" -> TargetLanguage.JAVA

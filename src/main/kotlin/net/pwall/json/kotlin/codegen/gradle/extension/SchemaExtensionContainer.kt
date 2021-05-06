@@ -1,5 +1,5 @@
 /*
- * @(#) ClassMapping.kt
+ * @(#) SchemaExtensionContainer.kt
  *
  * json-kotlin-gradle  Gradle Code Generation Plugin for JSON Schema
  * Copyright (c) 2021 Peter Wall
@@ -23,36 +23,31 @@
  * SOFTWARE.
  */
 
-package net.pwall.json.kotlin.codegen.gradle.mapping
+package net.pwall.json.kotlin.codegen.gradle.extension
 
-import javax.inject.Inject
+import groovy.lang.Closure
 
-import org.gradle.api.Named
-import org.gradle.api.Project
-import org.gradle.api.tasks.Input
-import org.gradle.kotlin.dsl.property
+import org.gradle.api.Action
+import org.gradle.api.ExtensiblePolymorphicDomainObjectContainer
 
-import net.pwall.json.schema.codegen.ClassId
-import net.pwall.json.schema.codegen.ClassName
-import net.pwall.json.schema.codegen.CodeGenerator
+interface SchemaExtensionContainer : ExtensiblePolymorphicDomainObjectContainer<SchemaExtension> {
 
-@Suppress("UnstableApiUsage")
-abstract class ClassMapping @Inject constructor(@Input val name0: String, project: Project) : Named {
+    fun formatValidation(): SchemaExtensionFormatValidation
 
-    override fun getName(): String = name0
+    fun formatValidation(closure: Closure<*>): SchemaExtensionFormatValidation
 
-    @Input
-    val className = project.objects.property<String>()
+    fun formatValidation(action: Action<in SchemaExtensionFormatValidation>): SchemaExtensionFormatValidation
 
-    abstract fun applyTo(codeGenerator: CodeGenerator)
+    fun intValidation(): SchemaExtensionIntValidation
 
-    val classId: ClassId
-        get() = className.get().let {
-            val i = it.lastIndexOf('.')
-            if (i < 0)
-                ClassName(it)
-            else
-                ClassName(it.substring(i + 1), it.substring(0, i))
-        }
+    fun intValidation(closure: Closure<*>): SchemaExtensionIntValidation
+
+    fun intValidation(action: Action<in SchemaExtensionIntValidation>): SchemaExtensionIntValidation
+
+    fun patternValidation(): SchemaExtensionPatternValidation
+
+    fun patternValidation(closure: Closure<*>): SchemaExtensionPatternValidation
+
+    fun patternValidation(action: Action<in SchemaExtensionPatternValidation>): SchemaExtensionPatternValidation
 
 }

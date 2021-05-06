@@ -31,6 +31,9 @@ import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.property
 
+import net.pwall.json.kotlin.codegen.gradle.extension.SchemaExtension
+import net.pwall.json.kotlin.codegen.gradle.extension.SchemaExtensionContainer
+import net.pwall.json.kotlin.codegen.gradle.extension.SchemaExtensionContainerImpl
 import net.pwall.json.kotlin.codegen.gradle.mapping.ClassMapping
 import net.pwall.json.kotlin.codegen.gradle.mapping.ClassMappingContainer
 import net.pwall.json.kotlin.codegen.gradle.mapping.ClassMappingContainerImpl
@@ -59,8 +62,14 @@ open class JSONSchemaCodegen(project: Project) {
     val classMappings: ClassMappingContainer = ClassMappingContainerImpl(project,
             project.objects.polymorphicDomainObjectContainer(ClassMapping::class.java))
 
+    val schemaExtensions: SchemaExtensionContainer = SchemaExtensionContainerImpl(project,
+            project.objects.polymorphicDomainObjectContainer(SchemaExtension::class.java))
+
     @Suppress("unused")
     fun classMappings(action: Action<in ClassMappingContainer>) = action.execute(classMappings)
+
+    @Suppress("unused")
+    fun schemaExtensions(action: Action<in SchemaExtensionContainer>) = action.execute(schemaExtensions)
 
     companion object {
         internal const val NAME = "jsonSchemaCodegen"
