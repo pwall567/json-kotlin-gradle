@@ -25,11 +25,14 @@
 
 package net.pwall.json.kotlin.codegen.gradle.mapping
 
+import kotlin.reflect.KClass
+import java.net.URI
 import groovy.lang.Closure
 
 import org.gradle.api.Action
 import org.gradle.api.ExtensiblePolymorphicDomainObjectContainer
 
+@Suppress("UnstableApiUsage")
 interface ClassMappingContainer : ExtensiblePolymorphicDomainObjectContainer<ClassMapping> {
 
     fun byFormat(): ClassMappingByFormat
@@ -38,16 +41,54 @@ interface ClassMappingContainer : ExtensiblePolymorphicDomainObjectContainer<Cla
 
     fun byFormat(action: Action<in ClassMappingByFormat>): ClassMappingByFormat
 
+    @Suppress("unused")
+    fun byFormat(className: String, keyword: String) = byFormat {
+        this.className.set(className)
+        this.keyword.set(keyword)
+    }
+
+    @Suppress("unused")
+    fun byFormat(classRef: KClass<*>, keyword: String) = byFormat {
+        this.className.set(classRef.qualifiedName)
+        this.keyword.set(keyword)
+    }
+
     fun byExtension(): ClassMappingByExtension
 
     fun byExtension(closure: Closure<*>): ClassMappingByExtension
 
     fun byExtension(action: Action<in ClassMappingByExtension>): ClassMappingByExtension
 
+    @Suppress("unused")
+    fun byExtension(className: String, keyword: String, value: String) = byExtension {
+        this.className.set(className)
+        this.keyword.set(keyword)
+        this.value.set(value)
+    }
+
+    @Suppress("unused")
+    fun byExtension(classRef: KClass<*>, keyword: String, value: String) = byExtension {
+        this.className.set(classRef.qualifiedName)
+        this.keyword.set(keyword)
+        this.value.set(value)
+    }
+
     fun byURI(): ClassMappingByURI
 
     fun byURI(closure: Closure<*>): ClassMappingByURI
 
     fun byURI(action: Action<in ClassMappingByURI>): ClassMappingByURI
+
+    @Suppress("unused")
+    fun byURI(className: String, uri: URI) = byURI {
+        this.className.set(className)
+        this.uri.set(uri)
+    }
+
+    @Suppress("unused")
+    fun byURI(classRef: KClass<*>, uri: URI) = byURI {
+        this.className.set(classRef.qualifiedName)
+        this.uri.set(uri)
+    }
 
 }

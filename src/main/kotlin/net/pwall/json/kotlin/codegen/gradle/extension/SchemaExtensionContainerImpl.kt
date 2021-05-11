@@ -87,6 +87,10 @@ class SchemaExtensionContainerImpl(project: Project,
         }
     }
 
+    override fun extensionName(keyword: String, configure: SchemaExtensionName.() -> Unit) {
+        SchemaExtensionName(this, keyword).configure()
+    }
+
     companion object {
 
         private var generationNumber = 0

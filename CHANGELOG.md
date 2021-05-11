@@ -6,6 +6,13 @@ The major and minor version numbers of this repository (but not patch numbers) m
 [`json-kotlin-schema-codegen`](https://github.com/pwall567/json-kotlin-schema-codegen) library used by this Gradle
 plugin. 
 
+## [0.31.4] - 2021-05-11
+### Changed
+- `ClassMappingContainer`, `SchemaExtensionContainer`, `SchemaExtensionContainerImpl`: simplified configuration
+- `build.gradle.kts`, `README.md`: bumped version number, extended example
+### Added
+- `SchemaExtensionName`: allows grouping of extensions with same name
+
 ## [0.31.3] - 2021-05-07
 ### Changed
 - `JSONSchemaCodegen`, `JSONSchemaCodegenTask`: Added `generatorComment`

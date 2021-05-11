@@ -30,6 +30,7 @@ import groovy.lang.Closure
 import org.gradle.api.Action
 import org.gradle.api.ExtensiblePolymorphicDomainObjectContainer
 
+@Suppress("UnstableApiUsage")
 interface SchemaExtensionContainer : ExtensiblePolymorphicDomainObjectContainer<SchemaExtension> {
 
     fun formatValidation(): SchemaExtensionFormatValidation
@@ -38,16 +39,40 @@ interface SchemaExtensionContainer : ExtensiblePolymorphicDomainObjectContainer<
 
     fun formatValidation(action: Action<in SchemaExtensionFormatValidation>): SchemaExtensionFormatValidation
 
+    @Suppress("unused")
+    fun formatValidation(keyword: String, value: String, format: String) = formatValidation {
+        this.keyword.set(keyword)
+        this.value.set(value)
+        this.format.set(format)
+    }
+
     fun intValidation(): SchemaExtensionIntValidation
 
     fun intValidation(closure: Closure<*>): SchemaExtensionIntValidation
 
     fun intValidation(action: Action<in SchemaExtensionIntValidation>): SchemaExtensionIntValidation
 
+    @Suppress("unused")
+    fun intValidation(keyword: String, value: String, type: String, number: Int) = intValidation {
+        this.keyword.set(keyword)
+        this.value.set(value)
+        this.type.set(type)
+        this.number.set(number)
+    }
+
     fun patternValidation(): SchemaExtensionPatternValidation
 
     fun patternValidation(closure: Closure<*>): SchemaExtensionPatternValidation
 
     fun patternValidation(action: Action<in SchemaExtensionPatternValidation>): SchemaExtensionPatternValidation
+
+    @Suppress("unused")
+    fun patternValidation(keyword: String, value: String, pattern: Regex) = patternValidation {
+        this.keyword.set(keyword)
+        this.value.set(value)
+        this.pattern.set(pattern)
+    }
+
+    fun extensionName(keyword: String, configure: SchemaExtensionName.() -> Unit)
 
 }

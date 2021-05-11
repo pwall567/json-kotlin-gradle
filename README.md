@@ -27,7 +27,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.31.3")
+        classpath("net.pwall.json:json-kotlin-gradle:0.31.4")
     }
 }
 
@@ -41,5 +41,11 @@ configure<JSONSchemaCodegen> {
     inputFile.set(file("path/to/your/file")) // probably in src/main/resources/...
     pointer.set("/\$defs") // a JSON Pointer to the group of definitions within the file
     generatorComment.set("comment...")
+    classMappings { // configure specific class mappings if required
+        byFormat("java.time.Duration", "duration")
+    }
+    schemaExtensions { // configure extension keyword uses if required
+        patternValidation("x-type", "account-number", Regex("^[0-9]{4,10}$"))
+    }
 }
 ```
