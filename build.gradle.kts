@@ -68,11 +68,11 @@ tasks {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("gradle-plugin-api"))
-    implementation("net.pwall.json:json-kotlin-schema:0.19")
-    implementation("net.pwall.json:json-kotlin-schema-codegen:0.31")
+    implementation("net.pwall.json:json-kotlin-schema:0.21")
+    implementation("net.pwall.json:json-kotlin-schema-codegen:0.34")
     implementation("net.pwall.json:jsonutil:5.0")
-    implementation("net.pwall.json:json-pointer:1.1.1")
-    implementation("net.pwall.yaml:yaml-simple:1.0")
+    implementation("net.pwall.json:json-pointer:2.2")
+    implementation("net.pwall.yaml:yaml-simple:1.2.1")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
 }
