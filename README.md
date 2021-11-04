@@ -27,7 +27,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.48")
+        classpath("net.pwall.json:json-kotlin-gradle:0.49.1")
     }
 }
 
