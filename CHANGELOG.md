@@ -4,7 +4,43 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
 The major and minor version numbers of this repository (but not patch numbers) match the version numbers of the
 [`json-kotlin-schema-codegen`](https://github.com/pwall567/json-kotlin-schema-codegen) library used by this Gradle
-plugin. 
+plugin.
+
+## [0.62] - 2021-11-16
+### Changed
+- `build.gradle.kts`: updated dependencies
+
+## [0.61] - 2021-11-14
+### Changed
+- `build.gradle.kts`: updated dependencies
+
+## [0.59] - 2021-11-09
+### Changed
+- `build.gradle.kts`: updated dependencies
+
+## [0.58] - 2021-11-09
+### Changed
+- `build.gradle.kts`: updated dependencies
+
+## [0.55] - 2021-11-08
+### Changed
+- `build.gradle.kts`: updated dependencies
+
+## [0.54] - 2021-11-07
+### Changed
+- `build.gradle.kts`: updated dependencies
+
+## [0.53] - 2021-11-07
+### Changed
+- `build.gradle.kts`: updated dependencies
+
+## [0.52] - 2021-11-07
+### Changed
+- `build.gradle.kts`: updated dependencies
+
+## [0.50] - 2021-11-05
+### Changed
+- `build.gradle.kts`: updated dependencies
 
 ## [0.49.1] - 2021-11-04
 ### Changed
