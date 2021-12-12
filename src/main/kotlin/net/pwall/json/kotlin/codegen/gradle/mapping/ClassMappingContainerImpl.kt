@@ -30,7 +30,6 @@ import groovy.lang.Closure
 import org.gradle.api.Action
 import org.gradle.api.ExtensiblePolymorphicDomainObjectContainer
 import org.gradle.api.Project
-import org.gradle.util.ConfigureUtil
 
 class ClassMappingContainerImpl(project: Project, delegate: ExtensiblePolymorphicDomainObjectContainer<ClassMapping>) :
         ClassMappingContainer, ExtensiblePolymorphicDomainObjectContainer<ClassMapping> by delegate {
@@ -44,7 +43,9 @@ class ClassMappingContainerImpl(project: Project, delegate: ExtensiblePolymorphi
     override fun byFormat(): ClassMappingByFormat = byFormat {}
 
     override fun byFormat(closure: Closure<*>): ClassMappingByFormat {
-        return byFormat(ConfigureUtil.configureUsing(closure))
+        return create(generatedName, ClassMappingByFormat::class.java) {
+            configure(closure)
+        }
     }
 
     override fun byFormat(action: Action<in ClassMappingByFormat>): ClassMappingByFormat {
@@ -56,7 +57,9 @@ class ClassMappingContainerImpl(project: Project, delegate: ExtensiblePolymorphi
     override fun byExtension(): ClassMappingByExtension = byExtension {}
 
     override fun byExtension(closure: Closure<*>): ClassMappingByExtension {
-        return byExtension(ConfigureUtil.configureUsing(closure))
+        return create(generatedName, ClassMappingByExtension::class.java) {
+            configure(closure)
+        }
     }
 
     override fun byExtension(action: Action<in ClassMappingByExtension>): ClassMappingByExtension {
@@ -68,7 +71,9 @@ class ClassMappingContainerImpl(project: Project, delegate: ExtensiblePolymorphi
     override fun byURI(): ClassMappingByURI = byURI {}
 
     override fun byURI(closure: Closure<*>): ClassMappingByURI {
-        return byURI(ConfigureUtil.configureUsing(closure))
+        return create(generatedName, ClassMappingByURI::class.java) {
+            configure(closure)
+        }
     }
 
     override fun byURI(action: Action<in ClassMappingByURI>): ClassMappingByURI {

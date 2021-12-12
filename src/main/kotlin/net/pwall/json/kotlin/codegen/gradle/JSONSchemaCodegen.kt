@@ -41,19 +41,15 @@ import net.pwall.json.kotlin.codegen.gradle.mapping.ClassMappingContainerImpl
 @Suppress("UnstableApiUsage")
 open class JSONSchemaCodegen(project: Project) {
 
-    val packageName = project.objects.property<String>().apply {
-        convention(project.provider { project.group.toString() })
-    }
+    val configFile = project.objects.property<File>()
+
+    val packageName = project.objects.property<String>()
 
     val inputFile = project.objects.property<File>()
 
-    val language = project.objects.property<String>().apply {
-        convention("kotlin")
-    }
+    val language = project.objects.property<String>()
 
-    val pointer = project.objects.property<String>().apply {
-        convention("")
-    }
+    val pointer = project.objects.property<String>()
 
     val outputDir = project.objects.property<File>()
 

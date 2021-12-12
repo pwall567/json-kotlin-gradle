@@ -31,56 +31,61 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.the
 
-import net.pwall.json.JSON
 import net.pwall.json.pointer.JSONPointer
 import net.pwall.json.schema.codegen.CodeGenerator
 import net.pwall.json.schema.codegen.TargetLanguage
 import net.pwall.json.schema.parser.Parser
-import net.pwall.yaml.YAMLSimple
 
 @Suppress("UnstableApiUsage")
 open class JSONSchemaCodegenTask : DefaultTask() {
 
-    init {
-        println("Initialising CodegenTask")
-    }
-
     @TaskAction
     fun generate() {
         val ext: JSONSchemaCodegen = project.the()
-        ext.inputFile.orNull?.let { inputFile ->
-            val schema = when (inputFile.name.substringAfterLast('.')) {
-                "yaml", "yml" -> YAMLSimple.process(inputFile).rootNode
-                "json" -> JSON.parse(inputFile)
-                else -> throw IllegalArgumentException("Can't process schema file - $inputFile")
-            } ?: throw IllegalArgumentException("Schema file is null - $inputFile")
-            val language = ext.language.get()
-            val outputDir = ext.outputDir.orNull ?: File("build/generated-sources/$language")
-            CodeGenerator().apply {
-                schemaParser = Parser().apply {
+        CodeGenerator().apply {
+            val parser = schemaParser ?: Parser().also { schemaParser = it }
+            nestedClassNameOption = CodeGenerator.NestedClassNameOption.USE_NAME_FROM_PROPERTY
+            val configFile = ext.configFile.orNull ?:
+                    File("src/main/resources/codegen-config.json").takeIf { it.exists() }
+            configFile?.let { configure(it) }
+            if (ext.schemaExtensions.isNotEmpty()) {
+                schemaParser = parser.apply {
                     customValidationHandler = { key, uri, pointer, value ->
                         ext.schemaExtensions.find {
                             it.keyword.get() == key && it.value.get() == value.toString()
                         }?.validator(uri, pointer)
                     }
                 }
-                targetLanguage = when (language) {
+            }
+            ext.packageName.orNull?.let { basePackageName = it }
+            ext.language.orNull?.let {
+                targetLanguage = when (it) {
                     "kotlin" -> TargetLanguage.KOTLIN
                     "java" -> TargetLanguage.JAVA
                     "typescript" -> TargetLanguage.TYPESCRIPT
-                    else -> throw IllegalArgumentException("Unrecognised language - $language")
+                    else -> throw IllegalArgumentException("Unrecognised language - $it")
                 }
-                nestedClassNameOption = CodeGenerator.NestedClassNameOption.USE_NAME_FROM_PROPERTY
-                basePackageName = ext.packageName.get()
-                baseDirectoryName = outputDir.path
-                ext.classMappings.forEach {
-                    it.applyTo(this)
-                }
-                ext.generatorComment.orNull?.let { generatorComment = it }
-                generateAll(schema, JSONPointer(ext.pointer.get()))
             }
-            println("Generation complete")
+            val outputDir = ext.outputDir.orNull ?: File("build/generated-sources/${targetLanguage.directory()}")
+            baseDirectoryName = outputDir.path
+            ext.classMappings.forEach {
+                it.applyTo(this)
+            }
+            ext.generatorComment.orNull?.let { generatorComment = it }
+            val inputFile = ext.inputFile.orNull ?: File("src/main/resources/schema")
+            ext.pointer.orNull?.let {
+                generateAll(parser.jsonReader.readJSON(inputFile), JSONPointer(it))
+            } ?: generate(inputFile)
         }
+        println("Generation complete")
+    }
+
+    private fun TargetLanguage.directory() = when (this) {
+        TargetLanguage.KOTLIN -> "kotlin"
+        TargetLanguage.JAVA,
+        TargetLanguage.JAVA16 -> "java"
+        TargetLanguage.TYPESCRIPT -> "ts"
+        TargetLanguage.MARKDOWN -> "doc"
     }
 
 }
