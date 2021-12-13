@@ -20,7 +20,7 @@ The `json-kotlin-gradle` plugin simplifies the use of this code generation mecha
 Include the following at the start of your `build.gradle.kts` file:
 ```kotlin
 import net.pwall.json.kotlin.codegen.gradle.JSONSchemaCodegenPlugin
-import net.pwall.json.kotlin.codegen.gradle.JSONSchemaCodegen
+import net.pwall.json.kotlin.codegen.gradle.JSONSchemaCodegen // only required if "configure" block included
 
 buildscript {
     repositories {
@@ -36,12 +36,14 @@ apply<JSONSchemaCodegenPlugin>()
 
 And to have the generated source files compiled:
 ```kotlin
-sourceSets["main"].withConvention(org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet::class) {
-    kotlin.srcDirs("build/generated-sources/kotlin")
+sourceSets.main {
+    java.srcDirs("build/generated-sources/kotlin")
 }
 ```
-(this shows the use of the default output directory; if it is changed by the use of the [`outputDir`](#outputdir)
-configuration property, this setting will also change.)
+This shows the use of the default output directory; if it is changed by the use of the [`outputDir`](#outputdir)
+configuration property, this setting will also change.
+The `srcDirs` function takes a `vararg` list; if other source files are to be included in the compilation task the
+directories may be added to the function call.
 
 The plugin follows the principle of "convention over configuration".
 The default location for the schema file or files to be input to the generation process is:
@@ -193,11 +195,7 @@ apply plugin: JSONSchemaCodegenPlugin
 To compile the generated sources:
 ```groovy
 sourceSets {
-    main {
-        kotlin {
-            srcDirs("build/generated-sources/kotlin")
-        }
-    }
+    main.kotlin.srcDirs += "build/generated-sources/kotlin"
 }
 ```
 
@@ -220,16 +218,12 @@ environment to work with.
 Functions that work in one version are frequently marked as deprecated in the next, and removed entirely in the version
 following that.
 
-For example, the configuration that specifies the input source directory to the Kotlin compiler (the code generation
-output) uses a function that is deprecated in Gradle 7.1, with little indication as to what alternative should be used
-in its place.
-
-I use Maven most of my own work, and while that system is far from perfect, it remains stable and functional and doesn't
-require an intimate knowledge of the inner workings of the build toll to achieve satisfactory results.
+I use Maven for most of my own work, and while that system is far from perfect, it remains stable and functional and
+doesn't require an intimate knowledge of the inner workings of the build tool to achieve satisfactory results.
 
 (For Maven users, there is a Maven equivalent to this plugin &ndash;
 [`json-kotlin-maven`](https://github.com/pwall567/json-kotlin-maven).)
 
 Peter Wall
 
-2021-12-12
+2021-12-13
