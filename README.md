@@ -27,7 +27,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.66")
+        classpath("net.pwall.json:json-kotlin-gradle:0.67")
     }
 }
 
@@ -226,4 +226,4 @@ doesn't require an intimate knowledge of the inner workings of the build tool to
 
 Peter Wall
 
-2021-12-13
+2022-01-07
