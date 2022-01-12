@@ -27,7 +27,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.67")
+        classpath("net.pwall.json:json-kotlin-gradle:0.67.1")
     }
 }
 
@@ -45,7 +45,7 @@ configuration property, this setting will also change.
 The `srcDirs` function takes a `vararg` list; if other source files are to be included in the compilation task the
 directories may be added to the function call.
 
-The plugin follows the principle of "convention over configuration".
+The plugin follows the principle of &ldquo;convention over configuration&rdquo;.
 The default location for the schema file or files to be input to the generation process is:
 ```
     «project root»/src/main/resources/schema
@@ -114,6 +114,25 @@ For example, to process the entire set of schema definitions in an OpenAPI file:
     inputFile.set(file("src/main/resources/openapi/openapi.yaml"))
     pointer.set("/components/schemas")
 ```
+
+### `include`
+
+To include only a nominated subset of definitions from a combined file (using [`pointer`](#pointer)), specify the names
+of the definitions to be included:
+```kotlin
+    include.set(listof("IncludeThis", "AndThis"))
+```
+
+### `exclude`
+
+Alternatively, to exclude nominated definitions from a combined file, specify the names of the definitions to be
+excluded:
+```kotlin
+    exclude.set(listof("NotThis", "NorThis"))
+```
+
+If both `include` and `exclude` are supplied in the same build, both will be applied, but this clearly doesn&rsquo;t
+make a great deal of sense since in order to be excluded, a definition must first have been explicitly included.
 
 ### `outputDir`
 
@@ -205,6 +224,7 @@ jsonSchemaCodegen {
     configFile = file('path/to/your/config.json')
     inputFile = file('path/to/your/file/or/files')
     pointer = '/pointer'
+    exclude = ['ExcludeThis', 'AndThis']
     packageName = 'com.example.model'
     generatorComment = 'This was generated from Schema version 1.0'
 }
@@ -226,4 +246,4 @@ doesn't require an intimate knowledge of the inner workings of the build tool to
 
 Peter Wall
 
-2022-01-07
+2022-01-12

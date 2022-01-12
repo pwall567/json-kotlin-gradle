@@ -37,6 +37,7 @@ import net.pwall.json.kotlin.codegen.gradle.extension.SchemaExtensionContainerIm
 import net.pwall.json.kotlin.codegen.gradle.mapping.ClassMapping
 import net.pwall.json.kotlin.codegen.gradle.mapping.ClassMappingContainer
 import net.pwall.json.kotlin.codegen.gradle.mapping.ClassMappingContainerImpl
+import org.gradle.kotlin.dsl.listProperty
 
 @Suppress("UnstableApiUsage")
 open class JSONSchemaCodegen(project: Project) {
@@ -50,6 +51,10 @@ open class JSONSchemaCodegen(project: Project) {
     val language = project.objects.property<String>()
 
     val pointer = project.objects.property<String>()
+
+    val include = project.objects.listProperty<String>()
+
+    val exclude = project.objects.listProperty<String>()
 
     val outputDir = project.objects.property<File>()
 

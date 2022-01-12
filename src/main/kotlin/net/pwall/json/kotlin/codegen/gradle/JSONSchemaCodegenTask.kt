@@ -73,8 +73,12 @@ open class JSONSchemaCodegenTask : DefaultTask() {
             }
             ext.generatorComment.orNull?.let { generatorComment = it }
             val inputFile = ext.inputFile.orNull ?: File("src/main/resources/schema")
+            val include = ext.include.orNull ?: emptyList()
+            val exclude = ext.exclude.orNull ?: emptyList()
             ext.pointer.orNull?.let {
-                generateAll(parser.jsonReader.readJSON(inputFile), JSONPointer(it))
+                generateAll(parser.jsonReader.readJSON(inputFile), JSONPointer(it)) { name ->
+                    (include.isEmpty() || name in include) && (exclude.isEmpty() || name !in exclude)
+                }
             } ?: generate(inputFile)
         }
         println("Generation complete")
