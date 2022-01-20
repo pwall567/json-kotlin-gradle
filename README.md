@@ -27,7 +27,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.67.1")
+        classpath("net.pwall.json:json-kotlin-gradle:0.68")
     }
 }
 
@@ -202,7 +202,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.66")
+        classpath("net.pwall.json:json-kotlin-gradle:0.68")
     }
 }
 ```
@@ -238,12 +238,12 @@ environment to work with.
 Functions that work in one version are frequently marked as deprecated in the next, and removed entirely in the version
 following that.
 
-I use Maven for most of my own work, and while that system is far from perfect, it remains stable and functional and
-doesn't require an intimate knowledge of the inner workings of the build tool to achieve satisfactory results.
+This plugin has been tested with Gradle version 7.1.
+The build process causes a number of warnings to be output, but these seem not to be significant.
 
 (For Maven users, there is a Maven equivalent to this plugin &ndash;
 [`json-kotlin-maven`](https://github.com/pwall567/json-kotlin-maven).)
 
 Peter Wall
 
-2022-01-12
+2022-01-20
