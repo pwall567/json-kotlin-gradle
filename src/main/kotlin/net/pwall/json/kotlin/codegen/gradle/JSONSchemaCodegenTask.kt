@@ -2,7 +2,7 @@
  * @(#) JSONSchemaCodegenTask.kt
  *
  * json-kotlin-gradle  Gradle Code Generation Plugin for JSON Schema
- * Copyright (c) 2021 Peter Wall
+ * Copyright (c) 2021, 2022 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,16 +34,14 @@ import org.gradle.kotlin.dsl.the
 import net.pwall.json.pointer.JSONPointer
 import net.pwall.json.schema.codegen.CodeGenerator
 import net.pwall.json.schema.codegen.TargetLanguage
-import net.pwall.json.schema.parser.Parser
 
-@Suppress("UnstableApiUsage")
 open class JSONSchemaCodegenTask : DefaultTask() {
 
     @TaskAction
     fun generate() {
         val ext: JSONSchemaCodegen = project.the()
         CodeGenerator().apply {
-            val parser = schemaParser ?: Parser().also { schemaParser = it }
+            val parser = schemaParser
             nestedClassNameOption = CodeGenerator.NestedClassNameOption.USE_NAME_FROM_PROPERTY
             val configFile = ext.configFile.orNull ?:
                     File("src/main/resources/codegen-config.json").takeIf { it.exists() }
@@ -72,24 +70,53 @@ open class JSONSchemaCodegenTask : DefaultTask() {
                 it.applyTo(this)
             }
             ext.generatorComment.orNull?.let { generatorComment = it }
-            val inputFile = ext.inputFile.orNull ?: File("src/main/resources/schema")
-            val include = ext.include.orNull ?: emptyList()
-            val exclude = ext.exclude.orNull ?: emptyList()
-            ext.pointer.orNull?.let {
-                generateAll(parser.jsonReader.readJSON(inputFile), JSONPointer(it)) { name ->
-                    (include.isEmpty() || name in include) && (exclude.isEmpty() || name !in exclude)
+            // TODO add new input handling here (remember to preload all schema files)
+            ext.inputs.forEach {
+                it.applyTo(this)
+            }
+            val inputFile = ext.inputFile.orNull
+            val pointer = ext.pointer.orNull
+            val includes = ext.include.orNull ?: emptyList()
+            val excludes = ext.exclude.orNull ?: emptyList()
+            when {
+                inputFile != null -> {
+                    if (pointer != null)
+                        addPointerTargets(inputFile, pointer, includes, excludes)
+                    else
+                        addTargets(listOf(inputFile))
                 }
-            } ?: generate(inputFile)
+                pointer != null -> addPointerTargets(defaultInputLocation, pointer, includes, excludes)
+                numTargets == 0 -> addTargets(listOf(defaultInputLocation))
+            }
+            generateAllTargets()
         }
         println("Generation complete")
     }
 
-    private fun TargetLanguage.directory() = when (this) {
-        TargetLanguage.KOTLIN -> "kotlin"
-        TargetLanguage.JAVA,
-        TargetLanguage.JAVA16 -> "java"
-        TargetLanguage.TYPESCRIPT -> "ts"
-        TargetLanguage.MARKDOWN -> "doc"
+    companion object {
+
+        private val defaultInputLocation = File("src/main/resources/schema")
+
+        private fun TargetLanguage.directory() = when (this) {
+            TargetLanguage.KOTLIN -> "kotlin"
+            TargetLanguage.JAVA,
+            TargetLanguage.JAVA16 -> "java"
+            TargetLanguage.TYPESCRIPT -> "ts"
+            TargetLanguage.MARKDOWN -> "doc"
+        }
+
+        fun CodeGenerator.addPointerTargets(
+            file: File,
+            pointer: String,
+            includes: List<String>,
+            excludes: List<String>,
+        ) {
+            schemaParser.preLoad(file)
+            addCompositeTargets(schemaParser.jsonReader.readJSON(file), JSONPointer(pointer)) { name ->
+                (includes.isEmpty() || name in includes) && (excludes.isEmpty() || name !in excludes)
+            }
+        }
+
     }
 
 }

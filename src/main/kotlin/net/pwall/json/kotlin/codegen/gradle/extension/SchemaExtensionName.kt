@@ -30,7 +30,6 @@ import groovy.lang.Closure
 import org.gradle.api.Action
 import org.gradle.util.ConfigureUtil
 
-@Suppress("UnstableApiUsage")
 class SchemaExtensionName(private val container: SchemaExtensionContainerImpl, private val keyword: String) {
 
     @Suppress("unused")

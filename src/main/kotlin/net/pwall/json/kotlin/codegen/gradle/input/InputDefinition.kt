@@ -1,8 +1,8 @@
 /*
- * @(#) SchemaExtensionFormatValidation.kt
+ * @(#) InputDefinition.kt
  *
  * json-kotlin-gradle  Gradle Code Generation Plugin for JSON Schema
- * Copyright (c) 2021 Peter Wall
+ * Copyright (c) 2022 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,35 +23,20 @@
  * SOFTWARE.
  */
 
-package net.pwall.json.kotlin.codegen.gradle.extension
+package net.pwall.json.kotlin.codegen.gradle.input
 
-import java.net.URI
 import javax.inject.Inject
 
+import org.gradle.api.Named
 import org.gradle.api.Project
 import org.gradle.api.tasks.Input
-import org.gradle.kotlin.dsl.property
 
-import net.pwall.json.pointer.JSONPointer
-import net.pwall.json.schema.JSONSchema
-import net.pwall.json.schema.validation.FormatValidator
+import net.pwall.json.schema.codegen.CodeGenerator
 
-class SchemaExtensionFormatValidation @Inject constructor(name: String, project: Project) :
-        SchemaExtension(name, project) {
+abstract class InputDefinition @Inject constructor(@Input val name0: String, project: Project) : Named {
 
-    @Input
-    val format = project.objects.property<String>()
+    override fun getName(): String = name0
 
-    override fun validator(uri: URI?, pointer: JSONPointer): JSONSchema.Validator {
-        return FormatValidator(uri, pointer, when (format.get()) {
-            "date" -> FormatValidator.DateFormatChecker
-            "date-time" -> FormatValidator.DateTimeFormatChecker
-            "time" -> FormatValidator.TimeFormatChecker
-            "uri" -> FormatValidator.URIFormatChecker
-            "uri-reference" -> FormatValidator.URIReferenceFormatChecker
-            "uuid" -> FormatValidator.UUIDFormatChecker
-            else -> throw IllegalArgumentException("Invalid format type")
-        })
-    }
+    abstract fun applyTo(codeGenerator: CodeGenerator)
 
 }

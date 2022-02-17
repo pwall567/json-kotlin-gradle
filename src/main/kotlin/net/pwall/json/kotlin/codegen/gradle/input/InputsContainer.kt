@@ -1,8 +1,8 @@
 /*
- * @(#) SchemaExtensionPatternValidation.kt
+ * @(#) InputsContainer.kt
  *
  * json-kotlin-gradle  Gradle Code Generation Plugin for JSON Schema
- * Copyright (c) 2021 Peter Wall
+ * Copyright (c) 2022 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,38 @@
  * SOFTWARE.
  */
 
-package net.pwall.json.kotlin.codegen.gradle.extension
+package net.pwall.json.kotlin.codegen.gradle.input
 
-import java.net.URI
-import javax.inject.Inject
+import java.io.File
 
-import org.gradle.api.Project
-import org.gradle.api.tasks.Input
-import org.gradle.kotlin.dsl.property
+import groovy.lang.Closure
 
-import net.pwall.json.pointer.JSONPointer
-import net.pwall.json.schema.JSONSchema
-import net.pwall.json.schema.validation.PatternValidator
+import org.gradle.api.Action
+import org.gradle.api.ExtensiblePolymorphicDomainObjectContainer
 
-class SchemaExtensionPatternValidation @Inject constructor(name: String, project: Project) :
-        SchemaExtension(name, project) {
+interface InputsContainer : ExtensiblePolymorphicDomainObjectContainer<InputDefinition> {
 
-    @Input
-    val pattern = project.objects.property<Regex>()
+    fun inputFile(): InputFile
 
-    override fun validator(uri: URI?, pointer: JSONPointer): JSONSchema.Validator {
-        return PatternValidator(uri, pointer, pattern.get())
+    fun inputFile(closure: Closure<*>): InputFile
+
+    fun inputFile(action: Action<in InputFile>): InputFile
+
+    @Suppress("unused")
+    fun inputFile(file: File) = inputFile {
+        this.file.set(file)
+    }
+
+    fun inputComposite(): InputComposite
+
+    fun inputComposite(closure: Closure<*>): InputComposite
+
+    fun inputComposite(action: Action<in InputComposite>): InputComposite
+
+    @Suppress("unused")
+    fun inputComposite(file: File, pointer: String) = inputComposite {
+        this.file.set(file)
+        this.pointer.set(pointer)
     }
 
 }

@@ -36,7 +36,6 @@ import net.pwall.json.pointer.JSONPointer
 import net.pwall.json.schema.JSONSchema
 import net.pwall.json.schema.validation.NumberValidator
 
-@Suppress("UnstableApiUsage")
 class SchemaExtensionIntValidation @Inject constructor(name: String, project: Project) :
         SchemaExtension(name, project) {
 

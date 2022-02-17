@@ -7,6 +7,10 @@
 
 Gradle JSON Schema code generation plugin.
 
+## NEW
+
+The means of specifying input files to the generation process has been extended; see the [`inputs`](#inputs) section.
+
 ## Background
 
 The [`json-kotlin-schema-codegen`](https://github.com/pwall567/json-kotlin-schema-codegen) project provides a means of
@@ -27,7 +31,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.68")
+        classpath("net.pwall.json:json-kotlin-gradle:0.70")
     }
 }
 
@@ -62,10 +66,19 @@ customisation options, you may include a configuration block as follows:
 ```kotlin
 configure<JSONSchemaCodegen> {
     configFile.set(file("path/to/your/config.json")) // if not in the default location
-    inputFile.set(file("path/to/your/schema/file/or/files")) // if not in the default location
     packageName.set("your.package.name") // if not specified in a config file
-    pointer.set("/\$defs") // a JSON Pointer to the group of definitions within the file
     generatorComment.set("comment...")
+    inputs {
+        inputFile(file("path/to/your/schema/file/or/files")) // if not in the default location
+        inputFile {
+            file.set(file("path/to/your/schema/file/or/files")) // alternative syntax for above
+        }
+        inputComposite {
+            file.set(file("path/to/your/schema/composite/file"))
+            pointer.set("/\$defs") // a JSON Pointer to the group of definitions within the file
+        }
+        // inputFile or inputComposite may be repeated as necessary
+    }
     classMappings { // configure specific class mappings if required
         byFormat("java.time.Duration", "duration")
     }
@@ -80,6 +93,60 @@ block (in `build.gradle.kts`) takes precedence.
 
 ## Configuration Options
 
+### `inputs`
+
+The `inputs` section specifies the location(s) of the input files.
+By default, the plugin will process all files in the `src/main/resources/schema` directory (and subdirectories);
+to specify a different location or a combination of inputs, the `inputs` section allows multiple `inputFile` or
+`inputComposite` definitions.
+
+### `inputFile`
+
+This specifies an individual file or directory of files to be added to the list of files to be processed.
+```kotlin
+    inputs {
+        inputFile {
+            file.set(file("alternative/syntax"))
+        }
+        inputFile(file("path/to/your/schema/file/or/files")) // alternative syntax
+    }
+```
+As many `inputFile` entries as are required may be specified.
+
+### `inputComposite`
+
+One of the common uses of the code generator is to generate a set of classes from a composite file.
+For example, an OpenAPI file may contain a number of schema definitions for the request and response objects of the API,
+or a JSON Schema file may contain a set of definitions in the `$defs` section.
+
+To specify this type of usage:
+```kotlin
+    inputs {
+        inputComposite {
+            file.set(file("path/to/your/composite/file"))
+            pointer.set("\$defs")
+            include.set(listof("IncludeThis", "AndThis")) // optional - specifies classes to include
+            exclude.set(listof("NotThis", "NorThis")) // optional - sepcifies files to exclude
+        }
+        inputComposite(file.set(file("path/to/your/composite/file")), "\$defs") // alternative syntax
+    }
+```
+As many `inputComposite` entries as are required may be specified, and they may be combined with `inputFile` entries.
+
+### `include` and `exclude`
+
+To include only a nominated subset of definitions from a combined file (using [`inputComposite`](#inputcomposite)),
+specify the names of the definitions to be included (optional &ndash; see example above).
+
+Alternatively, to exclude nominated definitions from a combined file, specify the names of the definitions to be
+excluded.
+
+If both `include` and `exclude` are supplied for the same composite, both will be applied, but this clearly
+doesn&rsquo;t make a great deal of sense since in order to be excluded, a definition must first have been explicitly
+included.
+
+The alternative (shorter) syntax for `inputComposite` does not provide for the specification of `include` or `exclude`.
+
 ### `configFile`
 
 If the config file is not in the default location of `src/main/resources/codegen-config.json`, the location of the file
@@ -90,49 +157,36 @@ may be specified using the `configFile` property:
 
 ### `inputFile`
 
-The input to the code generation process may be a single file or a directory tree containing a number of schema files.
-By default, the plugin will process all files in the `src/main/resources/schema` directory (and subdirectories), but to
-specify an alternative file or directory, use:
+This is the earlier means of specifying the input file or files;
+the [`inputs`](#inputs) section above is more flexible, and the older form may be deprecated in future.
 ```kotlin
     inputFile.set(file("path/to/your/schema/file/or/files"))
 ```
 
 ### `pointer`
 
-One of the common uses of the code generator is to generate a set of classes from a composite file.
-For example, an OpenAPI file may contain a number of schema definitions for the request and response objects of the API,
-or a JSON Schema file may contain a set of definitions in the `$defs` section.
-
-To specify this form of usage to the plugin, the configuration block must contain:
+This is the earlier means of specifying a composite input file;
+the [`inputs`](#inputs) section above is more flexible, and the older form may be deprecated in future.
 ```kotlin
     inputFile.set(file("path/to/your/file")) // must be a single file, and the default is not allowed
     pointer.set("/pointer/to/definitions") // JSON Pointer to the object containing the definitions
 ```
 
-For example, to process the entire set of schema definitions in an OpenAPI file:
-```kotlin
-    inputFile.set(file("src/main/resources/openapi/openapi.yaml"))
-    pointer.set("/components/schemas")
-```
-
 ### `include`
 
-To include only a nominated subset of definitions from a combined file (using [`pointer`](#pointer)), specify the names
-of the definitions to be included:
+This is the earlier means of specifying classes to be included from a composite input file;
+the [`inputs`](#inputs) section above is more flexible, and the older form may be deprecated in future.
 ```kotlin
     include.set(listof("IncludeThis", "AndThis"))
 ```
 
 ### `exclude`
 
-Alternatively, to exclude nominated definitions from a combined file, specify the names of the definitions to be
-excluded:
+This is the earlier means of specifying classes to be included from a composite input file;
+the [`inputs`](#inputs) section above is more flexible, and the older form may be deprecated in future.
 ```kotlin
     exclude.set(listof("NotThis", "NorThis"))
 ```
-
-If both `include` and `exclude` are supplied in the same build, both will be applied, but this clearly doesn&rsquo;t
-make a great deal of sense since in order to be excluded, a definition must first have been explicitly included.
 
 ### `outputDir`
 
@@ -202,7 +256,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.68")
+        classpath("net.pwall.json:json-kotlin-gradle:0.70")
     }
 }
 ```
@@ -229,14 +283,11 @@ jsonSchemaCodegen {
     generatorComment = 'This was generated from Schema version 1.0'
 }
 ```
-(The `classMappings` and `schemaExtensions` sections are not available in Groovy.)
+(The `classMappings` and `schemaExtensions` sections are not available in Groovy.
+The `inputs` section is also not available &ndash; the `inputFile` and `pointer` definitions as shown in the above
+example must be used instead.)
 
-## Observations on Gradle
-
-The examples shown above are correct at the time of writing, but I have found Gradle to be an exceptionally volatile
-environment to work with.
-Functions that work in one version are frequently marked as deprecated in the next, and removed entirely in the version
-following that.
+## Gradle Warnings
 
 This plugin has been tested with Gradle version 7.1.
 The build process causes a number of warnings to be output, but these seem not to be significant.
@@ -246,4 +297,4 @@ The build process causes a number of warnings to be output, but these seem not t
 
 Peter Wall
 
-2022-01-20
+2022-02-16

@@ -30,7 +30,6 @@ import groovy.lang.Closure
 import org.gradle.api.Action
 import org.gradle.api.ExtensiblePolymorphicDomainObjectContainer
 
-@Suppress("UnstableApiUsage")
 interface SchemaExtensionContainer : ExtensiblePolymorphicDomainObjectContainer<SchemaExtension> {
 
     fun formatValidation(): SchemaExtensionFormatValidation

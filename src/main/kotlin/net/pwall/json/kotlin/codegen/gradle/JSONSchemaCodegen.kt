@@ -2,7 +2,7 @@
  * @(#) JSONSchemaCodegen.kt
  *
  * json-kotlin-gradle  Gradle Code Generation Plugin for JSON Schema
- * Copyright (c) 2021 Peter Wall
+ * Copyright (c) 2021, 2022 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,17 +29,19 @@ import java.io.File
 
 import org.gradle.api.Action
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.listProperty
 import org.gradle.kotlin.dsl.property
 
 import net.pwall.json.kotlin.codegen.gradle.extension.SchemaExtension
 import net.pwall.json.kotlin.codegen.gradle.extension.SchemaExtensionContainer
 import net.pwall.json.kotlin.codegen.gradle.extension.SchemaExtensionContainerImpl
+import net.pwall.json.kotlin.codegen.gradle.input.InputDefinition
+import net.pwall.json.kotlin.codegen.gradle.input.InputsContainer
+import net.pwall.json.kotlin.codegen.gradle.input.InputsContainerImpl
 import net.pwall.json.kotlin.codegen.gradle.mapping.ClassMapping
 import net.pwall.json.kotlin.codegen.gradle.mapping.ClassMappingContainer
 import net.pwall.json.kotlin.codegen.gradle.mapping.ClassMappingContainerImpl
-import org.gradle.kotlin.dsl.listProperty
 
-@Suppress("UnstableApiUsage")
 open class JSONSchemaCodegen(project: Project) {
 
     val configFile = project.objects.property<File>()
@@ -66,11 +68,23 @@ open class JSONSchemaCodegen(project: Project) {
     val schemaExtensions: SchemaExtensionContainer = SchemaExtensionContainerImpl(project,
             project.objects.polymorphicDomainObjectContainer(SchemaExtension::class.java))
 
-    @Suppress("unused")
-    fun classMappings(action: Action<in ClassMappingContainer>) = action.execute(classMappings)
+    val inputs: InputsContainer = InputsContainerImpl(project,
+            project.objects.polymorphicDomainObjectContainer(InputDefinition::class.java))
 
     @Suppress("unused")
-    fun schemaExtensions(action: Action<in SchemaExtensionContainer>) = action.execute(schemaExtensions)
+    fun classMappings(action: Action<in ClassMappingContainer>) {
+        action.execute(classMappings)
+    }
+
+    @Suppress("unused")
+    fun schemaExtensions(action: Action<in SchemaExtensionContainer>) {
+        action.execute(schemaExtensions)
+    }
+
+    @Suppress("unused")
+    fun inputs(action: Action<in InputsContainer>) {
+        action.execute(inputs)
+    }
 
     companion object {
         internal const val NAME = "jsonSchemaCodegen"
