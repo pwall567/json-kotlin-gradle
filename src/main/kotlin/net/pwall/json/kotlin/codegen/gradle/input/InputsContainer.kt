@@ -26,6 +26,7 @@
 package net.pwall.json.kotlin.codegen.gradle.input
 
 import java.io.File
+import java.net.URI
 
 import groovy.lang.Closure
 
@@ -54,6 +55,29 @@ interface InputsContainer : ExtensiblePolymorphicDomainObjectContainer<InputDefi
     @Suppress("unused")
     fun inputComposite(file: File, pointer: String) = inputComposite {
         this.file.set(file)
+        this.pointer.set(pointer)
+    }
+
+    fun inputURI(): InputURI
+
+    fun inputURI(closure: Closure<*>): InputURI
+
+    fun inputURI(action: Action<in InputURI>): InputURI
+
+    @Suppress("unused")
+    fun inputURI(uri: URI) = inputURI {
+        this.uri.set(uri)
+    }
+
+    fun inputCompositeURI(): InputCompositeURI
+
+    fun inputCompositeURI(closure: Closure<*>): InputCompositeURI
+
+    fun inputCompositeURI(action: Action<in InputCompositeURI>): InputCompositeURI
+
+    @Suppress("unused")
+    fun inputCompositeURI(uri: URI, pointer: String) = inputCompositeURI {
+        this.uri.set(uri)
         this.pointer.set(pointer)
     }
 

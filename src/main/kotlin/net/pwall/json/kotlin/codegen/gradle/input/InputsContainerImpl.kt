@@ -37,6 +37,8 @@ class InputsContainerImpl(project: Project, delegate: ExtensiblePolymorphicDomai
     init {
         registerFactory(InputFile::class.java) { name -> InputFile(name, project) }
         registerFactory(InputComposite::class.java) { name -> InputComposite(name, project) }
+        registerFactory(InputURI::class.java) { name -> InputURI(name, project) }
+        registerFactory(InputCompositeURI::class.java) { name -> InputCompositeURI(name, project) }
     }
 
     override fun inputFile(): InputFile = inputFile {}
@@ -58,6 +60,27 @@ class InputsContainerImpl(project: Project, delegate: ExtensiblePolymorphicDomai
 
     override fun inputComposite(action: Action<in InputComposite>) =
         create(generatedName, InputComposite::class.java) {
+            action.execute(this)
+        }
+
+    override fun inputURI(): InputURI = inputURI {}
+
+    override fun inputURI(closure: Closure<*>) = create(generatedName, InputURI::class.java) {
+        configure(closure)
+    }
+
+    override fun inputURI(action: Action<in InputURI>) = create(generatedName, InputURI::class.java) {
+        action.execute(this)
+    }
+
+    override fun inputCompositeURI(): InputCompositeURI = inputCompositeURI {}
+
+    override fun inputCompositeURI(closure: Closure<*>) = create(generatedName, InputCompositeURI::class.java) {
+        configure(closure)
+    }
+
+    override fun inputCompositeURI(action: Action<in InputCompositeURI>) =
+        create(generatedName, InputCompositeURI::class.java) {
             action.execute(this)
         }
 

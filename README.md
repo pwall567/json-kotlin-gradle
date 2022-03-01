@@ -31,7 +31,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.70")
+        classpath("net.pwall.json:json-kotlin-gradle:0.71")
     }
 }
 
@@ -77,7 +77,10 @@ configure<JSONSchemaCodegen> {
             file.set(file("path/to/your/schema/composite/file"))
             pointer.set("/\$defs") // a JSON Pointer to the group of definitions within the file
         }
-        // inputFile or inputComposite may be repeated as necessary
+        inputURI(uri("https://example.com/path/to/file"))
+        inputCompositeURI(uri("https://example.com/path/to/composite"), "\$defs")
+        // inputFile, inputComposite, inputURI and inputCompositeURI
+        // may be repeated as necessary in any combination
     }
     classMappings { // configure specific class mappings if required
         byFormat("java.time.Duration", "duration")
@@ -111,7 +114,8 @@ This specifies an individual file or directory of files to be added to the list 
         inputFile(file("path/to/your/schema/file/or/files")) // alternative syntax
     }
 ```
-As many `inputFile` entries as are required may be specified.
+As many `inputFile` entries as are required may be specified, and they may be combined with other forms of input
+specification.
 
 ### `inputComposite`
 
@@ -131,12 +135,54 @@ To specify this type of usage:
         inputComposite(file.set(file("path/to/your/composite/file")), "\$defs") // alternative syntax
     }
 ```
-As many `inputComposite` entries as are required may be specified, and they may be combined with `inputFile` entries.
+As many `inputComposite` entries as are required may be specified, and they may be combined with other forms of input
+specification.
+
+### `inputURI`
+
+Many organisations will make their schema files available via a public URL.
+Others will have a local schema repository accessible within their own VPN.
+The code generator can generate files directly from a URI:
+```kotlin
+    inputs {
+        inputURI {
+            uri.set(uri("https://local.domain.com/schema/customer.json"))
+        }
+        inputURI(uri("https://local.domain.com/schema/customer.json")) // alternative syntax
+    }
+```
+In this case, the URI must be a valid URL pointing to a downloadable file.
+
+As many `inputURI` entries as are required may be specified, and they may be combined with other forms of input
+specification.
+
+### `inputCompositeURI`
+
+Composite files may also be accessed by URI:
+```kotlin
+    inputs {
+        inputCompositeURI {
+            uri.set(uri("https://local.domain.com/schema/api.json"))
+            pointer.set("\$defs")
+            include.set(listof("IncludeThis", "AndThis")) // optional - specifies classes to include
+            exclude.set(listof("NotThis", "NorThis")) // optional - sepcifies files to exclude
+        }
+        inputCompositeURI(uri("https://local.domain.com/schema/api.json"), "\$defs") // alternative syntax
+    }
+```
+The URI must be a valid URL pointing to a downloadable file, and the pointer string must select a sub-tree within that
+file.
+To include two separate sections of the same file, include two separate `inputCompositeURI` entries with the same URI
+but different pointers (and possibly include/exclude settings).
+
+As many `inputCompositeURI` entries as are required may be specified, and they may be combined with other forms of input
+specification.
 
 ### `include` and `exclude`
 
-To include only a nominated subset of definitions from a combined file (using [`inputComposite`](#inputcomposite)),
-specify the names of the definitions to be included (optional &ndash; see example above).
+To include only a nominated subset of definitions from a combined file (using [`inputComposite`](#inputcomposite) or
+[`inputCompositeURI`](#inputcompositeuri)), specify the names of the definitions to be included (optional &ndash; see
+example above).
 
 Alternatively, to exclude nominated definitions from a combined file, specify the names of the definitions to be
 excluded.
@@ -145,7 +191,8 @@ If both `include` and `exclude` are supplied for the same composite, both will b
 doesn&rsquo;t make a great deal of sense since in order to be excluded, a definition must first have been explicitly
 included.
 
-The alternative (shorter) syntax for `inputComposite` does not provide for the specification of `include` or `exclude`.
+The alternative (shorter) syntax for `inputComposite` or `inputCompositeURI` does not provide for the specification of
+`include` or `exclude`.
 
 ### `configFile`
 
@@ -256,7 +303,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.70")
+        classpath("net.pwall.json:json-kotlin-gradle:0.71")
     }
 }
 ```
@@ -297,4 +344,4 @@ The build process causes a number of warnings to be output, but these seem not t
 
 Peter Wall
 
-2022-02-16
+2022-03-01

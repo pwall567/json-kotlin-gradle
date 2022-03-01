@@ -1,5 +1,5 @@
 /*
- * @(#) InputComposite.kt
+ * @(#) InputCompositeURI.kt
  *
  * json-kotlin-gradle  Gradle Code Generation Plugin for JSON Schema
  * Copyright (c) 2022 Peter Wall
@@ -25,7 +25,7 @@
 
 package net.pwall.json.kotlin.codegen.gradle.input
 
-import java.io.File
+import java.net.URI
 import javax.inject.Inject
 
 import org.gradle.api.Project
@@ -33,13 +33,13 @@ import org.gradle.api.tasks.Input
 import org.gradle.kotlin.dsl.listProperty
 import org.gradle.kotlin.dsl.property
 
-import net.pwall.json.kotlin.codegen.gradle.JSONSchemaCodegenTask.Companion.addPointerTargets
+import net.pwall.json.pointer.JSONPointer
 import net.pwall.json.schema.codegen.CodeGenerator
 
-class InputComposite @Inject constructor(name: String, project: Project) : InputDefinition(name, project) {
+class InputCompositeURI @Inject constructor(name: String, project: Project) : InputDefinition(name, project) {
 
     @Input
-    val file = project.objects.property<File>()
+    val uri = project.objects.property<URI>()
 
     @Input
     val pointer = project.objects.property<String>()
@@ -51,12 +51,14 @@ class InputComposite @Inject constructor(name: String, project: Project) : Input
     val exclude = project.objects.listProperty<String>()
 
     override fun applyTo(codeGenerator: CodeGenerator) {
-        file.orNull?.let {
+        uri.orNull?.let {
             val includes = include.orNull ?: emptyList()
             val excludes = exclude.orNull ?: emptyList()
             val ptr = pointer.orNull ?: throw IllegalArgumentException("No pointer specified")
-            codeGenerator.addPointerTargets(it, ptr, includes, excludes)
-        } ?: throw IllegalArgumentException("No File specified")
+            codeGenerator.addCompositeTargets(it, JSONPointer(ptr)) { name ->
+                (includes.isEmpty() || name in includes) && (excludes.isEmpty() || name !in excludes)
+            }
+        } ?: throw IllegalArgumentException("No URI specified")
     }
 
     @Suppress("unused")

@@ -1,5 +1,5 @@
 /*
- * @(#) InputComposite.kt
+ * @(#) InputURI.kt
  *
  * json-kotlin-gradle  Gradle Code Generation Plugin for JSON Schema
  * Copyright (c) 2022 Peter Wall
@@ -25,48 +25,24 @@
 
 package net.pwall.json.kotlin.codegen.gradle.input
 
-import java.io.File
+import java.net.URI
 import javax.inject.Inject
 
 import org.gradle.api.Project
 import org.gradle.api.tasks.Input
-import org.gradle.kotlin.dsl.listProperty
 import org.gradle.kotlin.dsl.property
 
-import net.pwall.json.kotlin.codegen.gradle.JSONSchemaCodegenTask.Companion.addPointerTargets
 import net.pwall.json.schema.codegen.CodeGenerator
 
-class InputComposite @Inject constructor(name: String, project: Project) : InputDefinition(name, project) {
+class InputURI @Inject constructor(name: String, project: Project) : InputDefinition(name, project) {
 
     @Input
-    val file = project.objects.property<File>()
-
-    @Input
-    val pointer = project.objects.property<String>()
-
-    @Input
-    val include = project.objects.listProperty<String>()
-
-    @Input
-    val exclude = project.objects.listProperty<String>()
+    val uri = project.objects.property<URI>()
 
     override fun applyTo(codeGenerator: CodeGenerator) {
-        file.orNull?.let {
-            val includes = include.orNull ?: emptyList()
-            val excludes = exclude.orNull ?: emptyList()
-            val ptr = pointer.orNull ?: throw IllegalArgumentException("No pointer specified")
-            codeGenerator.addPointerTargets(it, ptr, includes, excludes)
-        } ?: throw IllegalArgumentException("No File specified")
-    }
-
-    @Suppress("unused")
-    fun include(vararg names: String) {
-        include.set(listOf(*names))
-    }
-
-    @Suppress("unused")
-    fun exclude(vararg names: String) {
-        exclude.set(listOf(*names))
+        uri.orNull?.let {
+            codeGenerator.addTarget(it)
+        } ?: throw IllegalArgumentException("No URI specified")
     }
 
 }

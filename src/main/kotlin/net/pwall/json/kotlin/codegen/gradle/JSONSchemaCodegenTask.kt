@@ -85,7 +85,7 @@ open class JSONSchemaCodegenTask : DefaultTask() {
                     else
                         addTargets(listOf(inputFile))
                 }
-                pointer != null -> addPointerTargets(defaultInputLocation, pointer, includes, excludes)
+                pointer != null -> throw IllegalArgumentException("Pointer with no composite input file")
                 numTargets == 0 -> addTargets(listOf(defaultInputLocation))
             }
             generateAllTargets()
