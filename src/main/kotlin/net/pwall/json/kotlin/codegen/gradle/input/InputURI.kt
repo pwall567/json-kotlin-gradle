@@ -39,10 +39,14 @@ class InputURI @Inject constructor(name: String, project: Project) : InputDefini
     @Input
     val uri = project.objects.property<URI>()
 
-    override fun applyTo(codeGenerator: CodeGenerator) {
-        uri.orNull?.let {
-            codeGenerator.addTarget(it)
-        } ?: throw IllegalArgumentException("No URI specified")
+    override fun preload(codeGenerator: CodeGenerator) {
+        codeGenerator.schemaParser.jsonReader.readJSON(checkURI())
     }
+
+    override fun applyTo(codeGenerator: CodeGenerator) {
+        codeGenerator.addTarget(checkURI())
+    }
+
+    private fun checkURI() = uri.orNull ?: throw IllegalArgumentException("No URI specified")
 
 }

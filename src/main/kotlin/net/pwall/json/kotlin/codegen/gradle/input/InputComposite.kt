@@ -50,13 +50,15 @@ class InputComposite @Inject constructor(name: String, project: Project) : Input
     @Input
     val exclude = project.objects.listProperty<String>()
 
+    override fun preload(codeGenerator: CodeGenerator) {
+        codeGenerator.schemaParser.preLoad(checkFile())
+    }
+
     override fun applyTo(codeGenerator: CodeGenerator) {
-        file.orNull?.let {
-            val includes = include.orNull ?: emptyList()
-            val excludes = exclude.orNull ?: emptyList()
-            val ptr = pointer.orNull ?: throw IllegalArgumentException("No pointer specified")
-            codeGenerator.addPointerTargets(it, ptr, includes, excludes)
-        } ?: throw IllegalArgumentException("No File specified")
+        val includes = include.orNull ?: emptyList()
+        val excludes = exclude.orNull ?: emptyList()
+        val ptr = pointer.orNull ?: throw IllegalArgumentException("No pointer specified")
+        codeGenerator.addPointerTargets(checkFile(), ptr, includes, excludes)
     }
 
     @Suppress("unused")
@@ -68,5 +70,7 @@ class InputComposite @Inject constructor(name: String, project: Project) : Input
     fun exclude(vararg names: String) {
         exclude.set(listOf(*names))
     }
+
+    private fun checkFile() = file.orNull ?: throw IllegalArgumentException("No File specified")
 
 }

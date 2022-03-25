@@ -37,6 +37,8 @@ abstract class InputDefinition @Inject constructor(@Input val name0: String, pro
 
     override fun getName(): String = name0
 
+    abstract fun preload(codeGenerator: CodeGenerator)
+
     abstract fun applyTo(codeGenerator: CodeGenerator)
 
 }

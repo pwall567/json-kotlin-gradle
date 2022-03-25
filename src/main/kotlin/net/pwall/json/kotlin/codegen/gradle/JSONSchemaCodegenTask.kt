@@ -70,7 +70,9 @@ open class JSONSchemaCodegenTask : DefaultTask() {
                 it.applyTo(this)
             }
             ext.generatorComment.orNull?.let { generatorComment = it }
-            // TODO add new input handling here (remember to preload all schema files)
+            ext.inputs.forEach {
+                it.preload(this)
+            }
             ext.inputs.forEach {
                 it.applyTo(this)
             }

@@ -50,15 +50,17 @@ class InputCompositeURI @Inject constructor(name: String, project: Project) : In
     @Input
     val exclude = project.objects.listProperty<String>()
 
+    override fun preload(codeGenerator: CodeGenerator) {
+        codeGenerator.schemaParser.jsonReader.readJSON(checkURI())
+    }
+
     override fun applyTo(codeGenerator: CodeGenerator) {
-        uri.orNull?.let {
-            val includes = include.orNull ?: emptyList()
-            val excludes = exclude.orNull ?: emptyList()
-            val ptr = pointer.orNull ?: throw IllegalArgumentException("No pointer specified")
-            codeGenerator.addCompositeTargets(it, JSONPointer(ptr)) { name ->
-                (includes.isEmpty() || name in includes) && (excludes.isEmpty() || name !in excludes)
-            }
-        } ?: throw IllegalArgumentException("No URI specified")
+        val includes = include.orNull ?: emptyList()
+        val excludes = exclude.orNull ?: emptyList()
+        val ptr = pointer.orNull ?: throw IllegalArgumentException("No pointer specified")
+        codeGenerator.addCompositeTargets(checkURI(), JSONPointer(ptr)) { name ->
+            (includes.isEmpty() || name in includes) && (excludes.isEmpty() || name !in excludes)
+        }
     }
 
     @Suppress("unused")
@@ -70,5 +72,7 @@ class InputCompositeURI @Inject constructor(name: String, project: Project) : In
     fun exclude(vararg names: String) {
         exclude.set(listOf(*names))
     }
+
+    private fun checkURI() = uri.orNull ?: throw IllegalArgumentException("No URI specified")
 
 }
