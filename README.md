@@ -33,7 +33,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.72.1")
+        classpath("net.pwall.json:json-kotlin-gradle:0.75")
     }
 }
 
@@ -111,11 +111,18 @@ This specifies an individual file or directory of files to be added to the list 
 ```kotlin
     inputs {
         inputFile {
-            file.set(file("alternative/syntax"))
+            file.set(file("path/to/your/schema/file/or/files"))
+            subPackage.set("sub.package.name") // optional sub-package name
         }
         inputFile(file("path/to/your/schema/file/or/files")) // alternative syntax
+        inputFile(file("path/to/your/schema/file/or/files"), "sub.package.name") // alternative syntax
     }
 ```
+If a `subPackage` name is supplied, the class or classes generated from this `inputFile` declaration will be output to
+the package _base.subPackage_ where _base_ is the base package from the [`packageName`](#packagename) declaration or the
+config file, and _subPackage_ is the name given here.
+The name may be a single name or a structured name using dot separators.
+
 As many `inputFile` entries as are required may be specified, and they may be combined with other forms of input
 specification.
 
@@ -305,7 +312,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.72.1")
+        classpath("net.pwall.json:json-kotlin-gradle:0.75")
     }
 }
 ```
@@ -346,4 +353,4 @@ The build process causes a number of warnings to be output, but these seem not t
 
 Peter Wall
 
-2022-03-02
+2022-04-21

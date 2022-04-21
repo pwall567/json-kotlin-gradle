@@ -39,12 +39,15 @@ class InputFile @Inject constructor(name: String, project: Project) : InputDefin
     @Input
     val file = project.objects.property<File>()
 
+    @Input
+    val subPackage = project.objects.property<String>()
+
     override fun preload(codeGenerator: CodeGenerator) {
         codeGenerator.schemaParser.preLoad(checkFile())
     }
 
     override fun applyTo(codeGenerator: CodeGenerator) {
-        codeGenerator.addTargets(listOf(checkFile()))
+        codeGenerator.addTargets(listOf(checkFile()), subPackage.orNull?.split('.') ?: emptyList())
     }
 
     private fun checkFile() = file.orNull ?: throw IllegalArgumentException("No File specified")

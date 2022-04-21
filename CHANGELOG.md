@@ -6,6 +6,15 @@ The major and minor version numbers of this repository (but not patch numbers) m
 [`json-kotlin-schema-codegen`](https://github.com/pwall567/json-kotlin-schema-codegen) library used by this Gradle
 plugin.
 
+## [0.75] - 2022-04-21
+### Changed
+- `InputFile`, `InputsContainer`: allow sub-package to be specified with file/directory
+- `build.gradle.kts`: updated dependency on `json-kotlin-schema-codegen`
+
+## [0.73] - 2022-03-27
+### Changed
+- `build.gradle.kts`: updated dependency on `json-kotlin-schema-codegen`
+
 ## [0.72.1] - 2022-03-25
 ### Changed
 - `JSONSchemaCodegenTask`, "inputs" classes: preload files before schema parsing

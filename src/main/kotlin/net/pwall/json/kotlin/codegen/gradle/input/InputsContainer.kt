@@ -46,6 +46,12 @@ interface InputsContainer : ExtensiblePolymorphicDomainObjectContainer<InputDefi
         this.file.set(file)
     }
 
+    @Suppress("unused")
+    fun inputFile(file: File, subPackage: String) = inputFile {
+        this.file.set(file)
+        this.subPackage.set(subPackage)
+    }
+
     fun inputComposite(): InputComposite
 
     fun inputComposite(closure: Closure<*>): InputComposite
