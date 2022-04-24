@@ -33,7 +33,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.76")
+        classpath("net.pwall.json:json-kotlin-gradle:0.77")
     }
 }
 
@@ -312,7 +312,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.76")
+        classpath("net.pwall.json:json-kotlin-gradle:0.77")
     }
 }
 ```
@@ -353,4 +353,4 @@ The build process causes a number of warnings to be output, but these seem not t
 
 Peter Wall
 
-2022-04-23
+2022-04-24
