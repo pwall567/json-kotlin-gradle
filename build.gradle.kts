@@ -7,15 +7,15 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "net.pwall.json"
-version = "0.77"
+version = "0.78"
 description = "Gradle Code Generation Plugin for JSON Schema"
 
 val displayName = "JSON Schema Code Generation Plugin"
 val projectURL = "https://github.com/pwall567/${project.name}"
 
 plugins {
-    kotlin("jvm") version("1.5.20")
-    id("org.jetbrains.dokka") version "1.5.0"
+    kotlin("jvm") version("1.6.10")
+    id("org.jetbrains.dokka") version "1.6.10"
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
     `kotlin-dsl`
     `maven-publish`
@@ -29,7 +29,7 @@ repositories {
 tasks {
     withType<KotlinCompile>().configureEach {
         kotlinOptions {
-            languageVersion = "1.5"
+            languageVersion = "1.6"
             jvmTarget = "1.8"
         }
     }
@@ -68,8 +68,8 @@ tasks {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("gradle-plugin-api"))
-    implementation("net.pwall.json:json-kotlin-schema:0.33")
-    implementation("net.pwall.json:json-kotlin-schema-codegen:0.77")
+    implementation("net.pwall.json:json-kotlin-schema:0.35")
+    implementation("net.pwall.json:json-kotlin-schema-codegen:0.78")
     implementation("net.pwall.json:jsonutil:5.0")
     implementation("net.pwall.json:json-pointer:2.2")
     testImplementation(kotlin("test"))
