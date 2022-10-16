@@ -33,7 +33,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.81")
+        classpath("net.pwall.json:json-kotlin-gradle:0.83")
     }
 }
 
@@ -312,7 +312,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.81")
+        classpath("net.pwall.json:json-kotlin-gradle:0.83")
     }
 }
 ```
@@ -345,12 +345,13 @@ example must be used instead.)
 
 ## Gradle Warnings
 
-This plugin has been tested with Gradle version 7.1.
-The build process causes a number of warnings to be output, but these seem not to be significant.
+This plugin has been tested with Gradle version 7.5.1.
+The build process gives warnings about features that will be incompatible with Gradle 8.0, but for the moment it seems
+to be OK.
 
 (For Maven users, there is a Maven equivalent to this plugin &ndash;
 [`json-kotlin-maven`](https://github.com/pwall567/json-kotlin-maven).)
 
 Peter Wall
 
-2022-06-30
+2022-10-16
