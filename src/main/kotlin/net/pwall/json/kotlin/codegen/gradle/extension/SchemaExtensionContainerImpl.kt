@@ -30,11 +30,11 @@ import groovy.lang.Closure
 import org.gradle.api.Action
 import org.gradle.api.ExtensiblePolymorphicDomainObjectContainer
 import org.gradle.api.Project
-import org.gradle.util.ConfigureUtil
 
-class SchemaExtensionContainerImpl(project: Project,
-        delegate: ExtensiblePolymorphicDomainObjectContainer<SchemaExtension>) : SchemaExtensionContainer,
-        ExtensiblePolymorphicDomainObjectContainer<SchemaExtension> by delegate {
+class SchemaExtensionContainerImpl(
+    val project: Project,
+    delegate: ExtensiblePolymorphicDomainObjectContainer<SchemaExtension>,
+) : SchemaExtensionContainer, ExtensiblePolymorphicDomainObjectContainer<SchemaExtension> by delegate {
 
     init {
         registerFactory(SchemaExtensionFormatValidation::class.java) { name ->
@@ -50,42 +50,33 @@ class SchemaExtensionContainerImpl(project: Project,
 
     override fun formatValidation(): SchemaExtensionFormatValidation = formatValidation {}
 
-    override fun formatValidation(closure: Closure<*>): SchemaExtensionFormatValidation {
-        return formatValidation(ConfigureUtil.configureUsing(closure))
-    }
+    override fun formatValidation(closure: Closure<*>): SchemaExtensionFormatValidation =
+        formatValidation { configure(closure) }
 
-    override fun formatValidation(action: Action<in SchemaExtensionFormatValidation>):
-            SchemaExtensionFormatValidation {
-        return create(generatedName, SchemaExtensionFormatValidation::class.java) {
+    override fun formatValidation(action: Action<in SchemaExtensionFormatValidation>): SchemaExtensionFormatValidation =
+        create(generatedName, SchemaExtensionFormatValidation::class.java) {
             action.execute(this)
         }
-    }
 
     override fun intValidation(): SchemaExtensionIntValidation = intValidation {}
 
-    override fun intValidation(closure: Closure<*>): SchemaExtensionIntValidation {
-        return intValidation(ConfigureUtil.configureUsing(closure))
-    }
+    override fun intValidation(closure: Closure<*>): SchemaExtensionIntValidation = intValidation { configure(closure) }
 
-    override fun intValidation(action: Action<in SchemaExtensionIntValidation>):
-            SchemaExtensionIntValidation {
-        return create(generatedName, SchemaExtensionIntValidation::class.java) {
+    override fun intValidation(action: Action<in SchemaExtensionIntValidation>): SchemaExtensionIntValidation =
+        create(generatedName, SchemaExtensionIntValidation::class.java) {
             action.execute(this)
         }
-    }
 
     override fun patternValidation(): SchemaExtensionPatternValidation = patternValidation {}
 
-    override fun patternValidation(closure: Closure<*>): SchemaExtensionPatternValidation {
-        return patternValidation(ConfigureUtil.configureUsing(closure))
-    }
+    override fun patternValidation(closure: Closure<*>): SchemaExtensionPatternValidation =
+        patternValidation { configure(closure) }
 
     override fun patternValidation(action: Action<in SchemaExtensionPatternValidation>):
-            SchemaExtensionPatternValidation {
-        return create(generatedName, SchemaExtensionPatternValidation::class.java) {
+            SchemaExtensionPatternValidation =
+        create(generatedName, SchemaExtensionPatternValidation::class.java) {
             action.execute(this)
         }
-    }
 
     override fun extensionName(keyword: String, configure: SchemaExtensionName.() -> Unit) {
         SchemaExtensionName(this, keyword).configure()

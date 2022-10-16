@@ -28,22 +28,22 @@ package net.pwall.json.kotlin.codegen.gradle.extension
 import groovy.lang.Closure
 
 import org.gradle.api.Action
-import org.gradle.util.ConfigureUtil
 
 class SchemaExtensionName(private val container: SchemaExtensionContainerImpl, private val keyword: String) {
 
     @Suppress("unused")
-    fun formatValidation(closure: Closure<*>): SchemaExtensionFormatValidation {
-        return formatValidation(ConfigureUtil.configureUsing(closure))
-    }
+    fun formatValidation(closure: Closure<*>): SchemaExtensionFormatValidation =
+        container.create(SchemaExtensionContainerImpl.generatedName,
+                SchemaExtensionFormatValidation::class.java) {
+            container.project.configure(this, closure)
+        }
 
     @Suppress("unused")
-    fun formatValidation(action: Action<in SchemaExtensionFormatValidation>): SchemaExtensionFormatValidation {
-        return container.create(SchemaExtensionContainerImpl.generatedName,
+    fun formatValidation(action: Action<in SchemaExtensionFormatValidation>): SchemaExtensionFormatValidation =
+        container.create(SchemaExtensionContainerImpl.generatedName,
                 SchemaExtensionFormatValidation::class.java) {
             action.execute(this)
         }
-    }
 
     @Suppress("unused")
     fun formatValidation(value: String, format: String) = formatValidation {
@@ -53,16 +53,16 @@ class SchemaExtensionName(private val container: SchemaExtensionContainerImpl, p
     }
 
     @Suppress("unused")
-    fun intValidation(closure: Closure<*>): SchemaExtensionIntValidation {
-        return intValidation(ConfigureUtil.configureUsing(closure))
-    }
+    fun intValidation(closure: Closure<*>): SchemaExtensionIntValidation =
+        container.create(SchemaExtensionContainerImpl.generatedName, SchemaExtensionIntValidation::class.java) {
+            container.project.configure(this, closure)
+        }
 
     @Suppress("unused")
-    fun intValidation(action: Action<in SchemaExtensionIntValidation>): SchemaExtensionIntValidation {
-        return container.create(SchemaExtensionContainerImpl.generatedName, SchemaExtensionIntValidation::class.java) {
+    fun intValidation(action: Action<in SchemaExtensionIntValidation>): SchemaExtensionIntValidation =
+        container.create(SchemaExtensionContainerImpl.generatedName, SchemaExtensionIntValidation::class.java) {
             action.execute(this)
         }
-    }
 
     @Suppress("unused")
     fun intValidation(value: String, type: String, number: Int) = intValidation {
@@ -73,17 +73,18 @@ class SchemaExtensionName(private val container: SchemaExtensionContainerImpl, p
     }
 
     @Suppress("unused")
-    fun patternValidation(closure: Closure<*>): SchemaExtensionPatternValidation {
-        return patternValidation(ConfigureUtil.configureUsing(closure))
-    }
+    fun patternValidation(closure: Closure<*>): SchemaExtensionPatternValidation =
+        container.create(SchemaExtensionContainerImpl.generatedName,
+                SchemaExtensionPatternValidation::class.java) {
+            container.project.configure(this, closure)
+        }
 
     @Suppress("unused")
-    fun patternValidation(action: Action<in SchemaExtensionPatternValidation>): SchemaExtensionPatternValidation {
-        return container.create(SchemaExtensionContainerImpl.generatedName,
+    fun patternValidation(action: Action<in SchemaExtensionPatternValidation>): SchemaExtensionPatternValidation =
+        container.create(SchemaExtensionContainerImpl.generatedName,
                 SchemaExtensionPatternValidation::class.java) {
             action.execute(this)
         }
-    }
 
     @Suppress("unused")
     fun patternValidation(value: String, pattern: Regex) = patternValidation {
