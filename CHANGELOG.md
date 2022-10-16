@@ -6,7 +6,7 @@ The major and minor version numbers of this repository (but not patch numbers) m
 [`json-kotlin-schema-codegen`](https://github.com/pwall567/json-kotlin-schema-codegen) library used by this Gradle
 plugin.
 
-## [Unreleased]
+## [0.83] - 2022-10-16
 ### Changed
 - `SchemaExtensionContainerImpl`, `SchemaExtensionName`: removed use of deprecated class `ConfigureUtil`
 - `InputDefinition`: eliminated warning
