@@ -33,7 +33,10 @@ import org.gradle.api.tasks.Input
 
 import net.pwall.json.schema.codegen.CodeGenerator
 
-abstract class InputDefinition @Inject constructor(@Input val name0: String, project: Project) : Named {
+abstract class InputDefinition @Inject constructor(
+    @Input val name0: String,
+    @Suppress("UNUSED_PARAMETER") project: Project,
+) : Named {
 
     override fun getName(): String = name0
 
