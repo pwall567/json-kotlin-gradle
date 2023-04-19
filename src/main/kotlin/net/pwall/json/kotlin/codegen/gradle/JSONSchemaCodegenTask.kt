@@ -2,7 +2,7 @@
  * @(#) JSONSchemaCodegenTask.kt
  *
  * json-kotlin-gradle  Gradle Code Generation Plugin for JSON Schema
- * Copyright (c) 2021, 2022 Peter Wall
+ * Copyright (c) 2021, 2022, 2023 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,7 @@ import org.gradle.kotlin.dsl.the
 
 import net.pwall.json.pointer.JSONPointer
 import net.pwall.json.schema.codegen.CodeGenerator
+import net.pwall.json.schema.codegen.TargetFileName
 import net.pwall.json.schema.codegen.TargetLanguage
 
 open class JSONSchemaCodegenTask : DefaultTask() {
@@ -89,6 +90,12 @@ open class JSONSchemaCodegenTask : DefaultTask() {
                 }
                 pointer != null -> throw IllegalArgumentException("Pointer with no composite input file")
                 numTargets == 0 -> addTargets(listOf(defaultInputLocation))
+            }
+            ext.indexFileName.orNull?.let {
+                indexFileName = if (it.contains('.'))
+                    TargetFileName(it.substringBefore('.'), it.substringAfter('.'))
+                else
+                    TargetFileName(it)
             }
             generateAllTargets()
         }

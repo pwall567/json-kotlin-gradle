@@ -2,7 +2,7 @@
  * @(#) JSONSchemaCodegen.kt
  *
  * json-kotlin-gradle  Gradle Code Generation Plugin for JSON Schema
- * Copyright (c) 2021, 2022 Peter Wall
+ * Copyright (c) 2021, 2022, 2023 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -61,6 +61,8 @@ open class JSONSchemaCodegen(project: Project) {
     val outputDir = project.objects.property<File>()
 
     val generatorComment = project.objects.property<String>()
+
+    val indexFileName = project.objects.property<String>()
 
     val classMappings: ClassMappingContainer = ClassMappingContainerImpl(project,
             project.objects.polymorphicDomainObjectContainer(ClassMapping::class.java))
