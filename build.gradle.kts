@@ -20,6 +20,15 @@ plugins {
     signing
 }
 
+gradlePlugin {
+    plugins {
+        create("json-kotlin") {
+            id = "${group}.json-kotlin"
+            implementationClass = "${group}.kotlin.codegen.gradle.JSONSchemaCodegenPlugin"
+        }
+    }
+}
+
 repositories {
     mavenCentral()
 }
