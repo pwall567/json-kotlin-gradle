@@ -33,7 +33,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.91")
+        classpath("net.pwall.json:json-kotlin-gradle:0.93.1")
     }
 }
 
@@ -137,7 +137,7 @@ To specify this type of usage:
     inputs {
         inputComposite {
             file.set(file("path/to/your/composite/file"))
-            pointer.set("\$defs")
+            pointer.set("/\$defs")
             include.set(listof("IncludeThis", "AndThis")) // optional - specifies classes to include
             exclude.set(listof("NotThis", "NorThis")) // optional - sepcifies files to exclude
         }
@@ -172,7 +172,7 @@ Composite files may also be accessed by URI:
     inputs {
         inputCompositeURI {
             uri.set(uri("https://local.domain.com/schema/api.json"))
-            pointer.set("\$defs")
+            pointer.set("/\$defs")
             include.set(listof("IncludeThis", "AndThis")) // optional - specifies classes to include
             exclude.set(listof("NotThis", "NorThis")) // optional - sepcifies files to exclude
         }
@@ -312,7 +312,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.91")
+        classpath("net.pwall.json:json-kotlin-gradle:0.93.1")
     }
 }
 ```
@@ -354,4 +354,4 @@ to be OK.
 
 Peter Wall
 
-2023-07-11
+2023-09-07
