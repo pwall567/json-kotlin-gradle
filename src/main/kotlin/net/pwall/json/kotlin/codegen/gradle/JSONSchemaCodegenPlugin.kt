@@ -30,6 +30,9 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.register
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompilerOptions
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 @Suppress("unused")
 class JSONSchemaCodegenPlugin : Plugin<Project> {
@@ -41,7 +44,9 @@ class JSONSchemaCodegenPlugin : Plugin<Project> {
             description = "Generates code for specified schemata"
             group = "build"
         }
-        project.tasks.findByName("compileKotlin")?.dependsOn(generateTask)
+        project.tasks.withType<KotlinCompilationTask<KotlinCommonCompilerOptions>>().configureEach {
+            dependsOn(generateTask)
+        }
     }
 
 }

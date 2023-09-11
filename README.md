@@ -4,7 +4,7 @@
 
 [![Build Status](https://travis-ci.com/pwall567/json-kotlin-gradle.svg?branch=main)](https://travis-ci.com/github/pwall567/json-kotlin-gradle)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Kotlin](https://img.shields.io/static/v1?label=Kotlin&message=v1.7.21&color=7f52ff&logo=kotlin&logoColor=7f52ff)](https://github.com/JetBrains/kotlin/releases/tag/v1.7.21)
+[![Kotlin](https://img.shields.io/static/v1?label=Kotlin&message=v1.8.22&color=7f52ff&logo=kotlin&logoColor=7f52ff)](https://github.com/JetBrains/kotlin/releases/tag/v1.8.22)
 [![Maven Central](https://img.shields.io/maven-central/v/net.pwall.json/json-kotlin-gradle?label=Maven%20Central)](https://search.maven.org/search?q=g:%22net.pwall.json%22%20AND%20a:%22json-kotlin-gradle%22)
 
 Gradle JSON Schema code generation plugin.
@@ -33,7 +33,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.93.1")
+        classpath("net.pwall.json:json-kotlin-gradle:0.93.2")
     }
 }
 
@@ -312,7 +312,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.93.1")
+        classpath("net.pwall.json:json-kotlin-gradle:0.93.2")
     }
 }
 ```
@@ -354,4 +354,4 @@ to be OK.
 
 Peter Wall
 
-2023-09-07
+2023-09-12
