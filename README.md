@@ -33,7 +33,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.95")
+        classpath("net.pwall.json:json-kotlin-gradle:0.96.1")
     }
 }
 
@@ -312,7 +312,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.95")
+        classpath("net.pwall.json:json-kotlin-gradle:0.96.1")
     }
 }
 ```
@@ -354,4 +354,4 @@ to be OK.
 
 Peter Wall
 
-2023-09-27
+2023-11-07
