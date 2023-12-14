@@ -2,10 +2,8 @@
  * @(#) build.gradle.kts
  */
 
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 group = "net.pwall.json"
-version = "0.99"
+version = "0.99.1"
 description = "Gradle Code Generation Plugin for JSON Schema"
 
 val displayName = "JSON Schema Code Generation Plugin"
@@ -24,13 +22,11 @@ repositories {
     mavenCentral()
 }
 
+kotlin {
+    jvmToolchain(8)
+}
+
 tasks {
-    withType<KotlinCompile>().configureEach {
-        kotlinOptions {
-            languageVersion = "1.8"
-            jvmTarget = "1.8"
-        }
-    }
     val sourcesJar by creating(Jar::class) {
         archiveClassifier.set("sources")
         from(sourceSets["main"].allSource)
