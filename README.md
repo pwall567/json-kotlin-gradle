@@ -39,6 +39,7 @@ buildscript {
 
 apply<JSONSchemaCodegenPlugin>()
 ```
+The `apply` line should come after the `buildscript` block, and **before** any `configure` block (see below).
 
 And to have the generated source files compiled:
 ```kotlin
@@ -354,4 +355,4 @@ to be OK.
 
 Peter Wall
 
-2023-12-14
+2023-01-23
