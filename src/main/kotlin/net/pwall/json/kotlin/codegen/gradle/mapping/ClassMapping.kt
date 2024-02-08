@@ -36,7 +36,6 @@ import net.pwall.json.schema.codegen.ClassId
 import net.pwall.json.schema.codegen.ClassName
 import net.pwall.json.schema.codegen.CodeGenerator
 
-@Suppress("UnstableApiUsage")
 abstract class ClassMapping @Inject constructor(@Input val name0: String, project: Project) : Named {
 
     override fun getName(): String = name0

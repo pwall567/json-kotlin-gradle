@@ -34,7 +34,6 @@ import org.gradle.kotlin.dsl.property
 
 import net.pwall.json.schema.codegen.CodeGenerator
 
-@Suppress("UnstableApiUsage")
 class ClassMappingByURI @Inject constructor(name: String, project: Project) :
         ClassMapping(name, project) {
 

@@ -32,7 +32,6 @@ import groovy.lang.Closure
 import org.gradle.api.Action
 import org.gradle.api.ExtensiblePolymorphicDomainObjectContainer
 
-@Suppress("UnstableApiUsage")
 interface ClassMappingContainer : ExtensiblePolymorphicDomainObjectContainer<ClassMapping> {
 
     fun byFormat(): ClassMappingByFormat
