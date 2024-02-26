@@ -3,7 +3,7 @@
  */
 
 group = "net.pwall.json"
-version = "0.104"
+version = "0.104.1"
 description = "Gradle Code Generation Plugin for JSON Schema"
 
 val displayName = "JSON Schema Code Generation Plugin"

@@ -42,18 +42,16 @@ open class JSONSchemaCodegenTask : DefaultTask() {
     fun generate() {
         val ext: JSONSchemaCodegen = project.the()
         CodeGenerator().apply {
-            val parser = schemaParser
             nestedClassNameOption = CodeGenerator.NestedClassNameOption.USE_NAME_FROM_PROPERTY
             val configFile = ext.configFile.orNull ?:
                     File("src/main/resources/codegen-config.json").takeIf { it.exists() }
             configFile?.let { configure(it) }
+            val parser = schemaParser
             if (ext.schemaExtensions.isNotEmpty()) {
-                schemaParser = parser.apply {
-                    customValidationHandler = { key, uri, pointer, value ->
-                        ext.schemaExtensions.find {
-                            it.keyword.get() == key && it.value.get() == value.toString()
-                        }?.validator(uri, pointer)
-                    }
+                parser.customValidationHandler = { key, uri, pointer, value ->
+                    ext.schemaExtensions.find {
+                        it.keyword.get() == key && it.value.get() == value.toString()
+                    }?.validator(uri, pointer)
                 }
             }
             ext.packageName.orNull?.let { basePackageName = it }
