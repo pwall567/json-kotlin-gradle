@@ -2,7 +2,7 @@
  * @(#) JSONSchemaCodegenTask.kt
  *
  * json-kotlin-gradle  Gradle Code Generation Plugin for JSON Schema
- * Copyright (c) 2021, 2022, 2023 Peter Wall
+ * Copyright (c) 2021, 2022, 2023, 2024 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,13 +45,14 @@ open class JSONSchemaCodegenTask : DefaultTask() {
             nestedClassNameOption = CodeGenerator.NestedClassNameOption.USE_NAME_FROM_PROPERTY
             val configFile = ext.configFile.orNull ?:
                     File("src/main/resources/codegen-config.json").takeIf { it.exists() }
-            configFile?.let { configure(it) }
+            configFile?.let { configure(it, it.toURI()) }
             val parser = schemaParser
             if (ext.schemaExtensions.isNotEmpty()) {
                 parser.customValidationHandler = { key, uri, pointer, value ->
+                    val valueString = value.toString()
                     ext.schemaExtensions.find {
-                        it.keyword.get() == key && it.value.get() == value.toString()
-                    }?.validator(uri, pointer)
+                        it.keyword.get() == key && it.value.get() == valueString
+                    }?.validator(uri, pointer.child(valueString))
                 }
             }
             ext.packageName.orNull?.let { basePackageName = it }

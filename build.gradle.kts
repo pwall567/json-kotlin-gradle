@@ -3,7 +3,7 @@
  */
 
 group = "net.pwall.json"
-version = "0.104.1"
+version = "0.105"
 description = "Gradle Code Generation Plugin for JSON Schema"
 
 val displayName = "JSON Schema Code Generation Plugin"
@@ -62,8 +62,8 @@ tasks {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("gradle-plugin"))
-    implementation("net.pwall.json:json-kotlin-schema:0.46")
-    implementation("net.pwall.json:json-kotlin-schema-codegen:0.104")
+    implementation("net.pwall.json:json-kotlin-schema:0.47")
+    implementation("net.pwall.json:json-kotlin-schema-codegen:0.105")
     implementation("net.pwall.json:jsonutil:5.1")
     implementation("net.pwall.json:json-pointer:2.5")
     testImplementation(kotlin("test"))
