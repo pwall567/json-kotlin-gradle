@@ -7,6 +7,6 @@ rootProject.name = "json-kotlin-gradle"
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        jcenter()
+        mavenCentral()
     }
 }
