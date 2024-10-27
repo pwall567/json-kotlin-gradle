@@ -33,7 +33,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.kotlin.dsl.listProperty
 import org.gradle.kotlin.dsl.property
 
-import net.pwall.json.pointer.JSONPointer
+import io.kjson.pointer.JSONPointer
 import net.pwall.json.schema.codegen.CodeGenerator
 
 class InputCompositeURI @Inject constructor(name: String, project: Project) : InputDefinition(name, project) {

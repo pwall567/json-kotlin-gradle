@@ -31,7 +31,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.the
 
-import net.pwall.json.pointer.JSONPointer
+import io.kjson.pointer.JSONPointer
 import net.pwall.json.schema.codegen.CodeGenerator
 import net.pwall.json.schema.codegen.TargetFileName
 import net.pwall.json.schema.codegen.TargetLanguage

@@ -33,7 +33,7 @@ import org.gradle.api.Project
 import org.gradle.api.tasks.Input
 import org.gradle.kotlin.dsl.property
 
-import net.pwall.json.pointer.JSONPointer
+import io.kjson.pointer.JSONPointer
 import net.pwall.json.schema.JSONSchema
 
 abstract class SchemaExtension @Inject constructor(@Input val name0: String, project: Project) : Named {

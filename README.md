@@ -2,9 +2,9 @@
 
 # json-kotlin-gradle
 
-[![Build Status](https://travis-ci.com/pwall567/json-kotlin-gradle.svg?branch=main)](https://travis-ci.com/github/pwall567/json-kotlin-gradle)
+[![Build Status](https://github.com/pwall567/json-kotlin-gradle/actions/workflows/build.yml/badge.svg)](https://github.com/pwall567/json-kotlin-gradle/actions/workflows/build.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Kotlin](https://img.shields.io/static/v1?label=Kotlin&message=v1.8.22&color=7f52ff&logo=kotlin&logoColor=7f52ff)](https://github.com/JetBrains/kotlin/releases/tag/v1.8.22)
+[![Kotlin](https://img.shields.io/static/v1?label=Kotlin&message=v1.9.24&color=7f52ff&logo=kotlin&logoColor=7f52ff)](https://github.com/JetBrains/kotlin/releases/tag/v1.9.24)
 [![Maven Central](https://img.shields.io/maven-central/v/net.pwall.json/json-kotlin-gradle?label=Maven%20Central)](https://search.maven.org/search?q=g:%22net.pwall.json%22%20AND%20a:%22json-kotlin-gradle%22)
 
 Gradle JSON Schema code generation plugin.
@@ -33,7 +33,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.107")
+        classpath("net.pwall.json:json-kotlin-gradle:0.111")
     }
 }
 
@@ -313,7 +313,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.107")
+        classpath("net.pwall.json:json-kotlin-gradle:0.111")
     }
 }
 ```
@@ -346,13 +346,13 @@ example must be used instead.)
 
 ## Gradle Warnings
 
-This plugin has been tested with Gradle version 7.5.1.
-The build process gives warnings about features that will be incompatible with Gradle 8.0, but for the moment it seems
-to be OK.
+This plugin has been tested with Gradle version 8.1.1.
+The build process gives warnings about features that will be incompatible with future Gradle versions, but for the
+moment it seems to be OK.
 
 (For Maven users, there is a Maven equivalent to this plugin &ndash;
 [`json-kotlin-maven`](https://github.com/pwall567/json-kotlin-maven).)
 
 Peter Wall
 
-2024-03-11
+2024-10-27
