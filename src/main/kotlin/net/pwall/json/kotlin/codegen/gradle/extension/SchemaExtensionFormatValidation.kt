@@ -43,15 +43,9 @@ class SchemaExtensionFormatValidation @Inject constructor(name: String, project:
     val format = project.objects.property<String>()
 
     override fun validator(uri: URI?, pointer: JSONPointer): JSONSchema.Validator {
-        return FormatValidator(uri, pointer, when (format.get()) {
-            "date" -> FormatValidator.DateFormatChecker
-            "date-time" -> FormatValidator.DateTimeFormatChecker
-            "time" -> FormatValidator.TimeFormatChecker
-            "uri" -> FormatValidator.URIFormatChecker
-            "uri-reference" -> FormatValidator.URIReferenceFormatChecker
-            "uuid" -> FormatValidator.UUIDFormatChecker
-            else -> throw IllegalArgumentException("Invalid format type")
-        })
+        val keyword = format.get()
+        return FormatValidator(uri, pointer,
+                FormatValidator.findChecker(keyword) ?: FormatValidator.NullFormatChecker(keyword))
     }
 
 }

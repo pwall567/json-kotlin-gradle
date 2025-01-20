@@ -1,5 +1,3 @@
-![Stop the war in Ukraine](https://pwall.net/ukraine1.png)
-
 # json-kotlin-gradle
 
 [![Build Status](https://github.com/pwall567/json-kotlin-gradle/actions/workflows/build.yml/badge.svg)](https://github.com/pwall567/json-kotlin-gradle/actions/workflows/build.yml)
@@ -33,7 +31,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.111")
+        classpath("net.pwall.json:json-kotlin-gradle:0.114")
     }
 }
 
@@ -313,7 +311,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.111")
+        classpath("net.pwall.json:json-kotlin-gradle:0.114")
     }
 }
 ```
@@ -355,4 +353,4 @@ moment it seems to be OK.
 
 Peter Wall
 
-2024-10-27
+2025-01-20
