@@ -26,7 +26,8 @@
 package net.pwall.json.kotlin.codegen.gradle
 
 import kotlin.test.Test
-import kotlin.test.assertTrue
+
+import io.kstuff.test.shouldBeType
 
 import org.gradle.kotlin.dsl.get
 import org.gradle.testfixtures.ProjectBuilder
@@ -36,13 +37,13 @@ class JSONSchemaCodegenPluginTest {
     @Test fun `should register codegen task`() {
         val project = ProjectBuilder.builder().build()
         project.pluginManager.apply(JSONSchemaCodegenPlugin::class.java)
-        assertTrue { project.tasks.getByName("generate") is JSONSchemaCodegenTask }
+        project.tasks.getByName("generate").shouldBeType<JSONSchemaCodegenTask>()
     }
 
     @Test fun `should register extension`() {
         val project = ProjectBuilder.builder().build()
         project.pluginManager.apply(JSONSchemaCodegenPlugin::class.java)
-        assertTrue { project.extensions[JSONSchemaCodegen.NAME] is JSONSchemaCodegen }
+        project.extensions[JSONSchemaCodegen.NAME].shouldBeType<JSONSchemaCodegen>()
     }
 
 }

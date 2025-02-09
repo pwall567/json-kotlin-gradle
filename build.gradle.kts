@@ -2,18 +2,18 @@
  * @(#) build.gradle.kts
  */
 
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 group = "net.pwall.json"
-version = "0.114"
+version = "0.116"
 description = "Gradle Code Generation Plugin for JSON Schema"
 
 val displayName = "JSON Schema Code Generation Plugin"
 val projectURL = "https://github.com/pwall567/${project.name}"
 
 plugins {
-    kotlin("jvm") version "1.9.24"
-    id("org.jetbrains.dokka") version "1.9.20"
+    kotlin("jvm") version "2.0.21"
+    id("org.jetbrains.dokka") version "2.0.0"
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
     `kotlin-dsl`
     `maven-publish`
@@ -26,14 +26,13 @@ repositories {
 
 kotlin {
     jvmToolchain(8)
+    compilerOptions {
+        languageVersion.set(KotlinVersion.KOTLIN_2_0)
+        apiVersion.set(KotlinVersion.KOTLIN_2_0)
+    }
 }
 
 tasks {
-    withType<KotlinCompile>().configureEach {
-        kotlinOptions {
-            languageVersion = "1.8"
-        }
-    }
     val sourcesJar by creating(Jar::class) {
         archiveClassifier.set("sources")
         from(sourceSets["main"].allSource)
@@ -69,11 +68,12 @@ tasks {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("gradle-plugin"))
-    implementation("net.pwall.json:json-kotlin-schema:0.53")
-    implementation("net.pwall.json:json-kotlin-schema-codegen:0.114")
-    implementation("io.kjson:kjson-pointer:8.6")
+    implementation("net.pwall.json:json-kotlin-schema:0.55")
+    implementation("net.pwall.json:json-kotlin-schema-codegen:0.116")
+    implementation("io.kjson:kjson-pointer:8.8")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
+    testImplementation("io.kstuff:should-test:4.4")
 }
 
 publishing {
