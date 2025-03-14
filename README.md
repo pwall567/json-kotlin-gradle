@@ -3,7 +3,7 @@
 [![Build Status](https://github.com/pwall567/json-kotlin-gradle/actions/workflows/build.yml/badge.svg)](https://github.com/pwall567/json-kotlin-gradle/actions/workflows/build.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Kotlin](https://img.shields.io/static/v1?label=Kotlin&message=v2.0.21&color=7f52ff&logo=kotlin&logoColor=7f52ff)](https://github.com/JetBrains/kotlin/releases/tag/v2.0.21)
-[![Maven Central](https://img.shields.io/maven-central/v/net.pwall.json/json-kotlin-gradle?label=Maven%20Central)](https://search.maven.org/search?q=g:%22net.pwall.json%22%20AND%20a:%22json-kotlin-gradle%22)
+[![Maven Central](https://img.shields.io/maven-central/v/net.pwall.json/json-kotlin-gradle?label=Maven%20Central)](https://central.sonatype.com/artifact/net.pwall.json/json-kotlin-gradle)
 
 Gradle JSON Schema code generation plugin.
 
@@ -31,7 +31,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.116")
+        classpath("net.pwall.json:json-kotlin-gradle:0.117")
     }
 }
 
@@ -311,7 +311,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.116")
+        classpath("net.pwall.json:json-kotlin-gradle:0.117")
     }
 }
 ```
