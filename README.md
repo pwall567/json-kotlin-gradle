@@ -31,7 +31,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.120")
+        classpath("net.pwall.json:json-kotlin-gradle:0.121")
     }
 }
 
@@ -311,7 +311,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("net.pwall.json:json-kotlin-gradle:0.120")
+        classpath("net.pwall.json:json-kotlin-gradle:0.121")
     }
 }
 ```

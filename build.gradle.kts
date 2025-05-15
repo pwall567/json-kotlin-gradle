@@ -69,7 +69,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("gradle-plugin"))
     implementation("net.pwall.json:json-kotlin-schema:0.56")
-    implementation("net.pwall.json:json-kotlin-schema-codegen:0.120")
+    implementation("net.pwall.json:json-kotlin-schema-codegen:0.121")
     implementation("io.kjson:kjson-pointer:8.8")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
