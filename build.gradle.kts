@@ -5,7 +5,7 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 group = "net.pwall.json"
-version = "0.120"
+version = "0.121"
 description = "Gradle Code Generation Plugin for JSON Schema"
 
 val displayName = "JSON Schema Code Generation Plugin"
