@@ -43,8 +43,7 @@ open class JSONSchemaCodegenTask : DefaultTask() {
         val ext: JSONSchemaCodegen = project.the()
         CodeGenerator().apply {
             nestedClassNameOption = CodeGenerator.NestedClassNameOption.USE_NAME_FROM_PROPERTY
-            val configFile = ext.configFile.orNull ?:
-                    File("src/main/resources/codegen-config.json").takeIf { it.exists() }
+            val configFile = ext.configFile.orNull ?: project.file(DEFAULT_CONFIGURATION).takeIf { it.exists() }
             configFile?.let { configure(it, it.toURI()) }
             val parser = schemaParser
             if (ext.schemaExtensions.isNotEmpty()) {
@@ -64,7 +63,8 @@ open class JSONSchemaCodegenTask : DefaultTask() {
                     else -> throw IllegalArgumentException("Unrecognised language - $it")
                 }
             }
-            val outputDir = ext.outputDir.orNull ?: File("build/generated-sources/${targetLanguage.directory()}")
+            val outputDir = ext.outputDir.orNull ?:
+                project.buildDir.resolve("generated-sources/${targetLanguage.directory()}")
             baseDirectoryName = outputDir.path
             ext.classMappings.forEach {
                 it.applyTo(this)
@@ -88,7 +88,7 @@ open class JSONSchemaCodegenTask : DefaultTask() {
                         addTargets(listOf(inputFile))
                 }
                 pointer != null -> throw IllegalArgumentException("Pointer with no composite input file")
-                numTargets == 0 -> addTargets(listOf(defaultInputLocation))
+                numTargets == 0 -> addTargets(listOf(project.file(DEFAULT_INPUT_LOCATION)))
             }
             ext.indexFileName.orNull?.let {
                 indexFileName = if (it.contains('.'))
@@ -103,7 +103,8 @@ open class JSONSchemaCodegenTask : DefaultTask() {
 
     companion object {
 
-        private val defaultInputLocation = File("src/main/resources/schema")
+        private const val DEFAULT_INPUT_LOCATION = "src/main/resources/schema"
+        private const val DEFAULT_CONFIGURATION = "src/main/resources/codegen-config.json"
 
         private fun TargetLanguage.directory() = when (this) {
             TargetLanguage.KOTLIN -> "kotlin"
